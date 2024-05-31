@@ -62,9 +62,9 @@ export const Instructions = () => {
           />
         </Box>
         <Box mt={2} sx={{ display: 'flex', justifyContent: 'flex-end'}}>
-          <Button variant="contained" color="primary" onClick={() => navigate(`${Router.appWritinTest}`)}>
+          {/* <Button variant="contained" color="primary" onClick={() => navigate(`${Router.appWritinTest}`)}>
             Start
-          </Button>
+          </Button> */}
         </Box>
       </Paper>
     </Container>

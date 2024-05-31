@@ -15,8 +15,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path={Router.appLogin} element={<Login />} />
-          <Route path="/" element={<Layout><Instructions/></Layout>} />
-          <Route path={Router.appMenu} element={<Layout><Menu /></Layout>} />
+          <Route path={Router.appMenu} element={<Layout><Instructions/></Layout>} />
+          <Route path='/' element={<Layout><Menu /></Layout>} />
           <Route path={Router.appWritinTest} element={<Layout><WritingTest /></Layout>} />
           <Route path={Router.appReadingTest} element={<Layout><ReadingTest /></Layout>} />
 
