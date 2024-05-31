@@ -28,7 +28,7 @@ export const ReadingTest = () => {
 
   const loadQuestions = async () => {
     try {
-      let response = await questionApi.getWritingTest();
+      let response = await questionApi.getReadingTest();
       if (response.status === 200) {
         let resp = response.data;
         setData(resp);
@@ -68,8 +68,6 @@ export const ReadingTest = () => {
     setCurrentCuestion({ ...currentQuestion, [name]: value });
   }
 
-  console.log('data', data);
-  console.log('respQuestion', respQuestion);
 
   useEffect(() => {
     loadQuestions();
@@ -78,7 +76,6 @@ export const ReadingTest = () => {
   const handleSubmit = () => {
     sendAnswer();
   }
-
 
 
   return (
@@ -98,11 +95,12 @@ export const ReadingTest = () => {
           <Box sx={{ width: '60%' }}>
             <ContainerQuestion>
               <Box>
-                <Typography variant="body1" align="center" fontSize={20}>
-                Lorem ipsum dolor sit amet consectetur adipiscing, elit porta varius laoreet vivamus nascetur id, magnis feugiat odio molestie pulvinar. Vel ut ad fames nullam mus accumsan lectus laoreet lobortis hendrerit vestibulum, orci habitasse id urna luctus etiam venenatis
+                <Typography variant="body1" align="left" fontSize={17}>
+                  {data?.text}
                 </Typography>
               </Box>
             </ContainerQuestion>
+
             <ContainerQuestion>
               <ContainerContent numberQuestion={true}>
                 <CustomTyphography>
@@ -110,9 +108,11 @@ export const ReadingTest = () => {
                 </CustomTyphography>
               </ContainerContent>
               <ContainerContent>
-                <Typography variant="body1" align="center">
-                  {data?.question}
-                </Typography>
+                {data?.questions.map((el) => (
+                  <Typography variant="body1" align="left">
+                    {el}
+                  </Typography>
+                ))}
               </ContainerContent>
             </ContainerQuestion>
 
@@ -129,7 +129,7 @@ export const ReadingTest = () => {
               />
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Button variant='contained' onClick={handleSubmit}>
+              <Button variant='contained'>
                 Enviar
               </Button>
             </Box>
