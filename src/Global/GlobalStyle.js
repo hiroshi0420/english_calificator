@@ -6,7 +6,9 @@ const colors = Object.freeze({
     grayLight: '#f4f4f4',
     green: '#4CAF50',
     red: '#f44336',
-    orange: '#ff9800'
+    orange: '#ff9800',
+    grayBold: '#f0f0f0',
+    customGray: '#f0f0f0' // Agregar color personalizado aquí
 });
 
 export const theme = createTheme({
@@ -41,10 +43,13 @@ export const theme = createTheme({
         background: {
             default: colors.grayLight,
         },
+        customGray: {
+            main: colors.customGray, // Usar color personalizado aquí
+        },
     },
     typography: {
         fontFamily: [
-            'Montserrat',
+            'Poppins',
             'sans-serif',
             'Material Icons'
         ].join(','),

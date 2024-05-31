@@ -1,4 +1,5 @@
 const Router = {
+    
     //APP
     appLogin: '/login',
     appMenu: '/menu',
@@ -6,8 +7,11 @@ const Router = {
     appReadingTest: '/readingTest',
     appSpeakingTest: '/spekingTest',
     applisteningTest: '/listeningTest',
-
+    appInstructions: '/instructions',
+    
     // API
+    apiBaseUrl: 'http://localhost:5000',
+    apiWritingTest: '/api/Writing',
 }
 
 

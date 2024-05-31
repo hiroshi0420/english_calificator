@@ -1,21 +1,24 @@
 import React from 'react'
-import { } from './Style';
-import { ThemeProvider, CssBaseline, Grid, } from '@mui/material';
+import { ThemeProvider, CssBaseline, Box, Paper} from '@mui/material';
 import Navbar from '../../Components/Navbar/Navbar';
 import { Drawer } from '../../Components/Sidebar/Style';
 import { theme } from '../../Global/GlobalStyle';
+import { ContainerNav, ContainerContent } from './Style';
+import CustomizedSteppers from '../../Components/Stepper/Stepper';
 
 
 export const Layout = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
-      <Grid sx={{ margin: 0, padding: 0 }}>
+      <Box sx={{ width: '100vw', height: '100vh' }}>
         <CssBaseline />
-        <Navbar sx={{backgroundColor:"red"}}/>
-        <Grid>
-          {children}
-        </Grid>
-      </Grid>
+        <ContainerNav>
+          <Navbar/>
+        </ContainerNav>
+        <ContainerContent id='containerContet'>
+            {children}
+        </ContainerContent>
+      </Box>
     </ThemeProvider>
   )
 }
