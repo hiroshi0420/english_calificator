@@ -16,6 +16,16 @@ export class QuestionApi {
         }
     }
 
+    async getReadingTest() {
+        try {
+            const response = await axios.get(`${Router.apiBaseUrl}${Router.apiReadingTest}`);
+            return response;
+        } catch (error) {
+            console.error("Error fetching writing test data:", error);
+            throw error;
+        }
+    }
+
     async sendWritingTest(data) {
         return await axios.post(Router.apiBaseUrl + Router.apiWritingTest, {
             question: data?.question,

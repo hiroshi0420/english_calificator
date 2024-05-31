@@ -22,6 +22,7 @@ export const SectionPageTitle = styled('section')(() => {
 export const ContainerQuestion = styled('div')(() => {
   return {
     display: 'flex',
+    overflow: 'auto',
     flexDirection: 'row',
     width: '100%',
     padding: '16px',
@@ -37,7 +38,7 @@ export const ContainerContent = styled(Box)(({ theme, numberQuestion }) => {
     width: numberQuestion ? '10%' : '90%',
     borderRadius: numberQuestion ? '4px 0 0 4px' : '0 4px 4px 0',
     maxHeight: '150px',
-    overflow: 'auto',
+    overflow: 'hidden',
     padding: '16px',
     background: numberQuestion ? theme.palette.customGray.main : theme.palette.background.default,
     '&::-webkit-scrollbar': {
