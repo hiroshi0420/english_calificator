@@ -13,6 +13,8 @@ const Router = {
     apiBaseUrl: 'http://localhost:5000',
     apiWritingTest: '/api/Writing',
     apiReadingTest: '/api/Reading',
+    apiListeningTest: '/api/Listening',
+    apiSpeakingTest: '/api/Speaking',
 
 }
 

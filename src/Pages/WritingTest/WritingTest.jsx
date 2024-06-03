@@ -31,7 +31,7 @@ export const WritingTest = () => {
 
   const loadQuestions = async () => {
     try {
-      let response = await questionApi.getWritingTest();
+      let response = await questionApi.getWritingTest(3);
       if (response.status === 200) {
         let resp = response.data;
         setData(resp);
@@ -143,6 +143,7 @@ export const WritingTest = () => {
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
+  console.log('data', data)
   return (
     <Container>
       <SectionPageTitle>
