@@ -23,6 +23,7 @@ export const ListeningTest = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [responses, setResponses] = useState([]);
   const [timeLeft, setTimeLeft] = useState(10 * 60);
+  const [audioBase64, setAudioBase64] = useState('');
 
   const progress = ((currentQuestionIndex + 1) / (data?.length || 1)) * 100;
 
@@ -33,6 +34,7 @@ export const ListeningTest = () => {
         let resp = response.data;
         setData(resp);
         setResponses(resp.map(() => ({ response: '' })));
+        setAudioBase64(resp[0].audioAsBase64);  // Set initial audio
       } else {
         console.error('Error al cargar preguntas:', response.statusText);
       }
@@ -60,12 +62,14 @@ export const ListeningTest = () => {
   const handleNext = () => {
     if (currentQuestionIndex < data?.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setAudioBase64(data[currentQuestionIndex + 1].audioAsBase64);  // Update audio for next question
     }
   };
 
   const handleBack = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
+      setAudioBase64(data[currentQuestionIndex - 1].audioAsBase64);  // Update audio for previous question
     }
   };
 
@@ -119,13 +123,15 @@ export const ListeningTest = () => {
               </ContainerContent>
               <ContainerContent>
                 <CustomTyphography variant="body1" align="left">
-                  {String(currentQuestionIndex + 1).padStart(2, '0')}. {data?.[currentQuestionIndex]?.questionSet[0]?.question}
+                  {String(currentQuestionIndex + 1).padStart(2, '0')}. {data?.[currentQuestionIndex]?.questionSet[currentQuestionIndex]?.question}
                 </CustomTyphography>
               </ContainerContent>
             </ContainerQuestion>
 
+            <audio controls src={`data:audio/mp3;base64,${audioBase64}`} />
+
             <ContainerOptions>
-              {data?.[currentQuestionIndex]?.questionSet[0]?.options.map((option, index) => (
+              {data?.[currentQuestionIndex]?.questionSet[currentQuestionIndex]?.options.map((option, index) => (
                 <Button
                   variant={responses[currentQuestionIndex]?.response === option ? "contained" : "outlined"}
                   onClick={() => handleOptionChange(currentQuestionIndex, option)}
