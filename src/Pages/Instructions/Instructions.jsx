@@ -1,9 +1,13 @@
-import React from 'react';
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
 import { Button, Checkbox, Container, FormControlLabel, Paper, Typography, Box, List, ListItem, ListItemText, Grid } from '@mui/material';
 
-export const Instructions = ({ examDetails }) => {
-  const navigate = useNavigate();
+export const Instructions = ({ examDetails, onCheckboxChange }) => {
+  const [readInstructions, setReadInstructions] = useState(false);
+
+  const handleCheckboxChange = (event) => {
+    setReadInstructions(event.target.checked);
+    onCheckboxChange(event.target.checked);
+  };
 
   return (
     <Container maxWidth="lg">
@@ -51,12 +55,11 @@ export const Instructions = ({ examDetails }) => {
         </Box>
         <Box mt={2}>
           <FormControlLabel
-            control={<Checkbox name="readInstructions" />}
+            control={<Checkbox name="readInstructions" checked={readInstructions} onChange={handleCheckboxChange} />}
             label="I have read instructions carefully"
           />
         </Box>
       </Paper>
     </Container>
-  )
+  );
 }
-
