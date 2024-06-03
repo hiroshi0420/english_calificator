@@ -24,7 +24,7 @@ function App() {
           <Route path={Router.appLogin} element={<Login />} />
           <Route path={Router.appMenu} element={<Layout><Instructions/></Layout>} />
           <Route path='/' element={<Layout><Menu /></Layout>} />
-          <Route path={Router.appWritinTest} element={<Layout><WritingTest /></Layout>} />
+          <Route path={Router.appWritingTest} element={<Layout><WritingTest /></Layout>} />
           <Route path={Router.appReadingTest} element={<Layout><ReadingTest /></Layout>} />
           <Route path={Router.applisteningTest} element={<Layout><ListeningTest/></Layout>} />
           <Route path={Router.appSpeakingTest} element={<Layout><SpeakingTest/></Layout>} />

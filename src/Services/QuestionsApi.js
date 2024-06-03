@@ -8,13 +8,18 @@ export class QuestionApi {
 
     async getWritingTest() {
         try {
-            const response = await axios.get(`${Router.apiBaseUrl}${Router.apiWritingTest}`);
+            const response = await axios.get(`${Router.apiBaseUrl}${Router.apiWritingTest}`, {
+                params: {
+                    questionsNumber: 3
+                }
+            });
             return response;
         } catch (error) {
             console.error("Error fetching writing test data:", error);
             throw error;
         }
     }
+    
 
     async getReadingTest() {
         try {
@@ -25,6 +30,32 @@ export class QuestionApi {
             throw error;
         }
     }
+
+    async getListeningTest() {
+        try {
+            const response = await axios.get(`${Router.apiBaseUrl}${Router.apiListeningTest}`, {
+                params: {
+                    questionsNumber: 3
+                }
+            });
+            return response;
+        } catch (error) {
+            console.error("Error fetching listening test data:", error);
+            throw error;
+        }
+    }
+    
+
+    async getSpeakingTest() {
+        try {
+            const response = await axios.get(`${Router.apiBaseUrl}${Router.apiSpeakingTest}`);
+            return response;
+        } catch (error) {
+            console.error("Error fetching writing test data:", error);
+            throw error;
+        }
+    }
+
 
     async sendWritingTest(data) {
         return await axios.post(Router.apiBaseUrl + Router.apiWritingTest, {
