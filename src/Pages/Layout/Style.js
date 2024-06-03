@@ -2,13 +2,9 @@ import { styled } from "@mui/material/styles";
 import { Box, Paper } from '@mui/material';
 
 
-export const ContainerContent = styled(Box)(({ theme }) => {
+export const ContainerContent = styled('div')(({ theme }) => {
     return {
-        display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'center',
-        overflow: 'auto',
-        flexWrap: 'wrap',
+        padding: '16px 40px',
         width: '100%',
         height: '92%',
         '&::-webkit-scrollbar': {
@@ -23,7 +19,6 @@ export const ContainerContent = styled(Box)(({ theme }) => {
         '&::-webkit-scrollbar-thumb:hover': {
             background: '#555',  // Color de fondo del control deslizante de la barra de desplazamiento cuando se pasa el mouse
         },
-    
     }
 })
 

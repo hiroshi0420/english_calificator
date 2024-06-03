@@ -1,32 +1,29 @@
 import { styled } from "@mui/material/styles";
+import SendIcon from '@mui/icons-material/Send';
 import { Box, Typography } from '@mui/material';
 
 
-export const ContainerNavbar = styled(Box)(({ theme }) => {
+export const Container = styled('div')(() => {
   return {
-    backgroundColor: theme.palette.primary.main,
     height: '100%',
-    width: '100%'
+    width: '100%',
   }
 })
 
 export const SectionPageTitle = styled('section')(() => {
   return {
     display: 'flex',
-    height: 'auto',
+    height: '10%',
     width: '100%',
   }
 })
-
-
-
 
 export const ContainerQuestion = styled('div')(() => {
   return {
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    padding: '16px',
+    paddingBottom: '16px',
     borderRadius: '20px',
   }
 })
@@ -51,9 +48,18 @@ export const ContainerContent = styled(Box)(({ theme, numberQuestion }) => {
   }
 })
 
-export const CustomTyphography = styled(Typography)(() => {
+export const CustomTyphography = styled(Typography)(({theme}) => {
   return {
+    color: theme.palette.primary.main,
     fontWeight: 'bold',
     fontSize: '2rem'
+  }
+})
+
+export const CustomSendIcon = styled(SendIcon)(({theme}) => {
+  return {
+    [theme.breakpoints.down('lg')]:{
+      fontSize: '16px !important'
+    }
   }
 })

@@ -24,6 +24,8 @@ export const theme = createTheme({
     palette: {
         primary: {
             main: colors.blueDark,
+            // main: colors.blueLight,
+
         },
         secondary: {
             main: colors.blueLight,
@@ -55,6 +57,13 @@ export const theme = createTheme({
         ].join(','),
     },
     components: {
+        MuiButton: {
+            styleOverrides: {
+                containedWarning: {
+                    color: '#FFFFFF', // Texto blanco
+                },
+            },
+        },
         MuiFormLabel: {
             styleOverrides: {
                 asterisk: {
@@ -67,3 +76,59 @@ export const theme = createTheme({
         },
     },
 });
+
+export const globalStyles = `
+  html {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: ${colors.grayBold}; 
+    height: 100vh;
+    margin: 0 auto;
+    overscroll-behavior: none;
+    width: 100%;
+  }
+
+  #root {
+    box-shadow: 0 0 10px rgba(0, 0, 0, .05);
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    outline: 0; 
+    border: 0;
+    box-sizing: border-box;
+  }
+
+  *:focus {
+    outline: 0;
+  }
+
+  body, input, button {
+    font-family: 'Poppins', sans-serif;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  select {
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    font-weight: 400;
+  }
+
+  textarea {
+    font-family: 'Poppins', sans-serif;
+  }
+`;
