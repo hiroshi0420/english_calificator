@@ -1,14 +1,9 @@
-// import { Box, Paper } from '@mui/material';
+import React from 'react';
 import { useNavigate } from "react-router-dom";
-import Router from "../../Router/router";
-
 import { Button, Checkbox, Container, FormControlLabel, Paper, Typography, Box, List, ListItem, ListItemText, Grid } from '@mui/material';
 
-
-
-export const Instructions = () => {
-    const navigate = useNavigate();
-
+export const Instructions = ({ examDetails }) => {
+  const navigate = useNavigate();
 
   return (
     <Container maxWidth="lg">
@@ -45,13 +40,12 @@ export const Instructions = () => {
         <Box mt={2}>
           <Grid container spacing={2} >
             <Grid item xs={12} sm={6}>
-              <Typography variant="body2"><strong>Name:</strong> Exam Trading</Typography>
-              <Typography variant="body2"><strong>Type:</strong> Writing</Typography>
-              <Typography variant="body2"><strong>Marks:</strong> 60</Typography>
+              <Typography variant="body2"><strong>Name:</strong> {examDetails.name}</Typography>
+              <Typography variant="body2"><strong>Type:</strong> {examDetails.type}</Typography>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Typography variant="body2"><strong>Total Questions:</strong> 60</Typography>
-              <Typography variant="body2"><strong>Total Duration:</strong> 60 Minutes</Typography>
+              <Typography variant="body2"><strong>Total Questions:</strong> {examDetails.totalQuestion}</Typography>
+              <Typography variant="body2"><strong>Total Duration:</strong> {examDetails.totalDuration}</Typography>
             </Grid>
           </Grid>
         </Box>
@@ -61,13 +55,8 @@ export const Instructions = () => {
             label="I have read instructions carefully"
           />
         </Box>
-        <Box mt={2} sx={{ display: 'flex', justifyContent: 'flex-end'}}>
-          {/* <Button variant="contained" color="primary" onClick={() => navigate(`${Router.appWritinTest}`)}>
-            Start
-          </Button> */}
-        </Box>
       </Paper>
     </Container>
-
   )
 }
+

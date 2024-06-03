@@ -1,29 +1,25 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Button, Card, CardContent, Dialog, DialogTitle, DialogContent, DialogActions, Grid } from '@mui/material';
+import { AppBar, Toolbar, Button, Card, CardContent, Grid } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-import { Instructions } from '../Instructions/Instructions';
-
-const Router = {
-  appLogin: '/login',
-  appMenu: '/menu',
-  appWritinTest: '/writinTest',
-  appReadingTest: '/readingTest',
-  appSpeakingTest: '/spekingTest',
-  applisteningTest: '/listeningTest',
-  appInstructions: '/instructions',
-  apiBaseUrl: 'http://localhost:5000',
-  apiWritingTest: '/api/Writing',
-};
+import DialogComponent from '../../Components/Dialog/DialogComponent';
+import Router from '../../Router/router';
 
 export const Menu = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [showInstructions, setShowInstructions] = useState(false);
   const [nextPath, setNextPath] = useState('');
+  const [examDetails, setExamDetails] = useState({
+    name: '',
+    type: '',
+    totalQuestion: 3,
+    totalDuration: '10 minutes'
+  });
 
-  const handleNavigation = (path) => {
+  const handleNavigation = (path, name, type) => {
     setNextPath(path);
+    setExamDetails({ name, type, totalQuestion: 3, totalDuration: '10 minutes' });
     setShowInstructions(true);
   };
 
@@ -43,7 +39,7 @@ export const Menu = () => {
                   <Button
                     color="inherit"
                     style={{ marginRight: theme.spacing(2), color: theme.palette.customGray.main }}
-                    onClick={() => handleNavigation(Router.appWritinTest)}
+                    onClick={() => handleNavigation(Router.appWritingTest, 'Writing Test', 'Writing')}
                   >
                     Writing
                   </Button>
@@ -58,7 +54,7 @@ export const Menu = () => {
                   <Button
                     color="inherit"
                     style={{ color: theme.palette.customGray.main }}
-                    onClick={() => handleNavigation(Router.appReadingTest)}
+                    onClick={() => handleNavigation(Router.appReadingTest, 'Reading Test', 'Reading')}
                   >
                     Reading
                   </Button>
@@ -73,7 +69,7 @@ export const Menu = () => {
                   <Button
                     color="inherit"
                     style={{ marginRight: theme.spacing(2), color: theme.palette.customGray.main }}
-                    onClick={() => handleNavigation(Router.appSpeakingTest)}
+                    onClick={() => handleNavigation(Router.appSpeakingTest, 'Speaking Test', 'Speaking')}
                   >
                     Speaking
                   </Button>
@@ -88,7 +84,7 @@ export const Menu = () => {
                   <Button
                     color="inherit"
                     style={{ color: theme.palette.customGray.main }}
-                    onClick={() => handleNavigation(Router.appllisteningTest)}
+                    onClick={() => handleNavigation(Router.applisteningTest, 'Listening Test', 'Listening')}
                   >
                     Listening
                   </Button>
@@ -99,17 +95,13 @@ export const Menu = () => {
         </Grid>
       </CardContent>
 
-      <Dialog open={showInstructions} onClose={() => setShowInstructions(false)} maxWidth={200}>
-        <DialogTitle>Instructions</DialogTitle>
-        <DialogContent>
-          <Instructions/>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseInstructions} color="primary">
-            Proceed
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <DialogComponent
+        examDetails={examDetails}
+        nextPath={nextPath}
+        showInstructions={showInstructions}
+        setShowInstructions={setShowInstructions}
+        handleCloseInstructions={handleCloseInstructions}
+      />
     </Card>
   );
 };

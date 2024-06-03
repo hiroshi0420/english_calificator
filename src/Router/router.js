@@ -3,7 +3,7 @@ const Router = {
     //APP
     appLogin: '/login',
     appMenu: '/menu',
-    appWritinTest: '/writinTest',
+    appWritingTest: '/writingTest',
     appReadingTest: '/readingTest',
     appSpeakingTest: '/spekingTest',
     applisteningTest: '/listeningTest',

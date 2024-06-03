@@ -5,7 +5,7 @@ import MuiAppBar from "@mui/material/AppBar";
 export const ContainerNavbar = styled('div')(({ theme }) => {
   return {
     backgroundColor: theme.palette.primary.main,
-    height: '100%',
+    height: '8%',
     width: '100%'
   }
 })
@@ -68,7 +68,7 @@ export const StyledInputBase = styled(InputBase)(({ theme }) => {
       width: '20ch',
       [theme.breakpoints.down('lg')]: {
         '&::placeholder': {
-          fontSize: '1rem',
+          fontSize: '0.80rem',
         },
       },
     },
