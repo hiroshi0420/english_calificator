@@ -5,7 +5,7 @@ const Router = {
     appMenu: '/menu',
     appWritingTest: '/writingTest',
     appReadingTest: '/readingTest',
-    appSpeakingTest: '/spekingTest',
+    appSpeakingTest: '/speakingTest',
     applisteningTest: '/listeningTest',
     appInstructions: '/instructions',
     
