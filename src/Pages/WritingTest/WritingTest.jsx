@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 // MUI
 import { Paper, Typography, Button, Box, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -15,6 +17,7 @@ import { QuestionApi } from '../../Services/QuestionsApi';
 
 export const WritingTest = () => {
   const questionApi = new QuestionApi();
+  const navigate = useNavigate();
 
   const theme = useTheme();
   const isLgDown = useMediaQuery(theme.breakpoints.down('lg'));
@@ -194,7 +197,7 @@ export const WritingTest = () => {
                       color='warning'
                       endIcon={<CustomSendIcon />}
                       sx={{ fontSize: isLgDown && '0.80rem', height: '25px', width: '150px' }}
-                      onClick={handleSubmit}
+                      onClick={() => navigate('/')}
                     >
                       Submit
                     </Button>

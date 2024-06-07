@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 // MUI
 import { Paper, Typography, Button, Box, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -15,6 +16,7 @@ import { QuestionApi } from '../../Services/QuestionsApi';
 import { RecordingComponent } from '../../Components/Recording/RecordingComponent';
 
 export const SpeakingTest = () => {
+  const navigate = useNavigate();
   const questionApi = new QuestionApi();
 
   const theme = useTheme();
@@ -253,7 +255,7 @@ export const SpeakingTest = () => {
                       color='warning'
                       endIcon={<CustomSendIcon />}
                       sx={{ fontSize: isLgDown && '0.80rem', height: '25px', width: '150px' }}
-                      onClick={handleSubmit}
+                      onClick={() => navigate('/')}
                     >
                       Submit
                     </Button>

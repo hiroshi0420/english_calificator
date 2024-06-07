@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 // MUI
-import { Paper, Typography, Button, Box, useMediaQuery } from '@mui/material';
+import { Paper, Button, Box, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import ArticleIcon from '@mui/icons-material/Article';
 // Components
@@ -15,6 +17,7 @@ import { SectionPageTitle, ContainerQuestion, ContainerContent, CustomTyphograph
 import { QuestionApi } from '../../Services/QuestionsApi';
 
 export const ListeningTest = () => {
+  const navigate = useNavigate();
   const questionApi = new QuestionApi();
 
   const theme = useTheme();
@@ -160,7 +163,7 @@ export const ListeningTest = () => {
                     color='warning'
                     endIcon={<CustomSendIcon />}
                     sx={{ fontSize: isLgDown && '0.80rem', height: '25px', width: '150px' }}
-                    onClick={handleSubmit}
+                    onClick={() => navigate('/')}
                   >
                     Submit
                   </Button>

@@ -11,6 +11,7 @@ import { ReadingTest } from './Pages/ReadingTest.js/ReadingTest';
 import { Instructions } from './Pages/Instructions/Instructions';
 import { ListeningTest } from './Pages/ListeningTest/ListeningTest';
 import { SpeakingTest } from './Pages/SpeakingTest/SpeakingTest';
+import { ResultsTest } from './Pages/ResultsTest/ResultsTest';
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
           <Route path={Router.appReadingTest} element={<Layout><ReadingTest /></Layout>} />
           <Route path={Router.applisteningTest} element={<Layout><ListeningTest/></Layout>} />
           <Route path={Router.appSpeakingTest} element={<Layout><SpeakingTest/></Layout>} />
+          <Route path={Router.appResults} element={<Layout><ResultsTest/></Layout>} />
 
 
           {/* Ruta para manejar todas las rutas no definidas */}
