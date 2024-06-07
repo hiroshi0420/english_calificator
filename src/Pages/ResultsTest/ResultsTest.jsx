@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
-import { Container, Grid, Card, CardContent, Typography, CircularProgress, Paper, Box } from '@mui/material';
+import { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Container, Grid, Card, CardContent, Typography, CircularProgress, Paper, Box, Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 // Icons
@@ -10,6 +11,9 @@ import HeadphonesIcon from '@mui/icons-material/Headphones'; // Listening
 
 import { QuestionApi } from '../../Services/QuestionsApi';
 
+import { TestContext } from '../../Context/TestProvider';
+import { BackDropComponent } from '../../Components/BackDrop/BackDropComponet';
+
 const iconMapping = {
   Listening: HeadphonesIcon,
   Reading: AutoStoriesIcon,
@@ -19,9 +23,12 @@ const iconMapping = {
 
 export const ResultsTest = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const questionApi = new QuestionApi();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(false);
+  const { setCompletedTests } = useContext(TestContext);
 
   const loadResults = async () => {
     try {
@@ -39,6 +46,20 @@ export const ResultsTest = () => {
     loadResults();
   }, []);
 
+  const handleReset = () => {
+    setOpen(true);
+    setCompletedTests({
+      writing: false,
+      reading: false,
+      speaking: false,
+      listening: false,
+    });
+    setTimeout(() => {
+      navigate('/menu');
+      setOpen(false);
+    }, 1000);
+  };
+
   if (loading) {
     return <CircularProgress />;
   }
@@ -48,7 +69,7 @@ export const ResultsTest = () => {
   }
 
   return (
-    <Paper sx={{ padding: '36px' }}>
+    <Paper sx={{ padding: '30px' }}>
       <Container>
         <Grid>
           <Card sx={{ padding: '16px', display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', borderBottom: `4px solid ${theme.palette.primary.main}` }}>
@@ -64,7 +85,7 @@ export const ResultsTest = () => {
               </Typography>
             </Box>
 
-            <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} padding={'16px'} borderRadius={'5px'} bgcolor={theme.palette.primary.main}>
+            <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} padding={'15px'} borderRadius={'5px'} bgcolor={theme.palette.primary.main}>
               <Typography fontWeight={'bold'} color={theme.palette.background.default}>
                 English Level
               </Typography>
@@ -99,6 +120,12 @@ export const ResultsTest = () => {
             );
           })}
         </Grid>
+        <BackDropComponent open={open}/>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
+          <Button variant="contained" color="primary" onClick={handleReset}>
+            Back to menu
+          </Button>
+        </Box>
       </Container>
     </Paper>
   );

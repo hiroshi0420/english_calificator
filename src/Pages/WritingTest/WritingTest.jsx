@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // MUI
@@ -15,8 +15,12 @@ import { SectionPageTitle, ContainerQuestion, ContainerContent, CustomTyphograph
 // API
 import { QuestionApi } from '../../Services/QuestionsApi';
 
+import { TestContext } from '../../Context/TestProvider';
+import { BackDropComponent } from '../../Components/BackDrop/BackDropComponet';
+
 export const WritingTest = () => {
   const questionApi = new QuestionApi();
+  const { completedTests, setCompletedTests } = useContext(TestContext);
   const navigate = useNavigate();
 
   const theme = useTheme();
@@ -24,6 +28,7 @@ export const WritingTest = () => {
   const [data, setData] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [responses, setResponses] = useState([]);
+  const [open, setOpen] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState({
     question: '',
     response: '',
@@ -131,12 +136,26 @@ export const WritingTest = () => {
   }, []);
 
   const handleSubmit = () => {
+    setOpen(true);
     // Guardar la respuesta actual en el estado de respuestas
-    const updatedAllResponses = [...allResponses];
-    updatedAllResponses[currentQuestionIndex].response = currentQuestion.response;
-    setAllResponses(updatedAllResponses);
+    // const updatedAllResponses = [...allResponses];
+    // updatedAllResponses[currentQuestionIndex].response = currentQuestion.response;
+    // setAllResponses(updatedAllResponses);
 
-    sendAnswer();
+    // sendAnswer();
+    const allTestsCompleted = {
+      ...completedTests,
+      writing: true,
+    };
+    setCompletedTests(allTestsCompleted);
+
+    const allCompleted = Object.values(allTestsCompleted).every(test => test === true);
+    setOpen(false);
+    if (allCompleted) {
+      navigate('/results');
+    } else {
+      navigate('/menu');
+    }
   };
 
   // Format the time as MM:SS
@@ -197,7 +216,7 @@ export const WritingTest = () => {
                       color='warning'
                       endIcon={<CustomSendIcon />}
                       sx={{ fontSize: isLgDown && '0.80rem', height: '25px', width: '150px' }}
-                      onClick={() => navigate('/')}
+                      onClick={handleSubmit}
                     >
                       Submit
                     </Button>
@@ -216,6 +235,7 @@ export const WritingTest = () => {
             </Box>
           </Box>
         </Box>
+        <BackDropComponent open={open}/>
       </Paper>
     </Container>
   );

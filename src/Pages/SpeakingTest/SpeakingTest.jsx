@@ -1,13 +1,12 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 // MUI
 import { Paper, Typography, Button, Box, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import ArticleIcon from '@mui/icons-material/Article';
 // Components
 import { PageTitle } from '../../Components/PageTitle/PageTitle';
 import { HeaderSection } from '../../Components/Header/HeaderSection';
-import { CustomTextField } from '../../Components/TextField/TextField';
+import InterpreterModeIcon from '@mui/icons-material/InterpreterMode';
 // Styles
 import { SectionPageTitle, ContainerQuestion, ContainerContent, CustomTyphography, Container, CustomSendIcon, ContainerRecording } from './Style';
 
@@ -15,12 +14,18 @@ import { SectionPageTitle, ContainerQuestion, ContainerContent, CustomTyphograph
 import { QuestionApi } from '../../Services/QuestionsApi';
 import { RecordingComponent } from '../../Components/Recording/RecordingComponent';
 
+import { TestContext } from '../../Context/TestProvider';
+
+import { BackDropComponent } from '../../Components/BackDrop/BackDropComponet';
+
 export const SpeakingTest = () => {
   const navigate = useNavigate();
+  const { completedTests, setCompletedTests } = useContext(TestContext);
   const questionApi = new QuestionApi();
 
   const theme = useTheme();
   const isLgDown = useMediaQuery(theme.breakpoints.down('lg'));
+  const [open, setOpen] = useState(false);
   const [data, setData] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [responses, setResponses] = useState([]);
@@ -137,12 +142,26 @@ export const SpeakingTest = () => {
   }, []);
 
   const handleSubmit = () => {
+    setOpen(true);
     // Guardar la respuesta actual en el estado de respuestas
-    const updatedAllResponses = [...allResponses];
-    updatedAllResponses[currentQuestionIndex].response = currentQuestion.response;
-    setAllResponses(updatedAllResponses);
+    // const updatedAllResponses = [...allResponses];
+    // updatedAllResponses[currentQuestionIndex].response = currentQuestion.response;
+    // setAllResponses(updatedAllResponses);
 
-    sendAnswer();
+    // sendAnswer();
+    const allTestsCompleted = {
+      ...completedTests,
+      speaking: true,
+    };
+    setCompletedTests(allTestsCompleted);
+
+    const allCompleted = Object.values(allTestsCompleted).every(test => test === true);
+    setOpen(false);
+    if (allCompleted) {
+      navigate('/results');
+    } else {
+      navigate('/menu');
+    }
   };
 
   // Format the time as MM:SS
@@ -202,7 +221,7 @@ export const SpeakingTest = () => {
   return (
     <Container>
       <SectionPageTitle>
-        <PageTitle title='Speaking Test' icon={<ArticleIcon />} />
+        <PageTitle title='Speaking Test' icon={<InterpreterModeIcon />} />
       </SectionPageTitle>
       <HeaderSection
         formatTime={formatTime}
@@ -255,7 +274,7 @@ export const SpeakingTest = () => {
                       color='warning'
                       endIcon={<CustomSendIcon />}
                       sx={{ fontSize: isLgDown && '0.80rem', height: '25px', width: '150px' }}
-                      onClick={() => navigate('/')}
+                      onClick={handleSubmit}
                     >
                       Submit
                     </Button>
@@ -274,6 +293,7 @@ export const SpeakingTest = () => {
             </Box>
           </Box>
         </Box>
+        <BackDropComponent open={open}/>
       </Paper>
     </Container>
   );

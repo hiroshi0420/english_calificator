@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // MUI
 import { Paper, Button, Box, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import ArticleIcon from '@mui/icons-material/Article';
+import HeadsetMicIcon from '@mui/icons-material/HeadsetMic';
 // Components
 import { PageTitle } from '../../Components/PageTitle/PageTitle';
 import { HeaderSection } from '../../Components/Header/HeaderSection';
@@ -16,13 +17,19 @@ import { SectionPageTitle, ContainerQuestion, ContainerContent, CustomTyphograph
 // API
 import { QuestionApi } from '../../Services/QuestionsApi';
 
+import { TestContext } from '../../Context/TestProvider';
+
+import { BackDropComponent } from '../../Components/BackDrop/BackDropComponet';
+
 export const ListeningTest = () => {
   const navigate = useNavigate();
+  const { completedTests, setCompletedTests } = useContext(TestContext);
   const questionApi = new QuestionApi();
 
   const theme = useTheme();
   const isLgDown = useMediaQuery(theme.breakpoints.down('lg'));
   const [data, setData] = useState(null);
+  const [open, setOpen] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [responses, setResponses] = useState([]);
   const [timeLeft, setTimeLeft] = useState(10 * 60);
@@ -95,7 +102,21 @@ export const ListeningTest = () => {
   }, []);
 
   const handleSubmit = () => {
-    sendAnswer();
+    setOpen(true);
+    // sendAnswer();
+    const allTestsCompleted = {
+      ...completedTests,
+      listening: true,
+    };
+    setCompletedTests(allTestsCompleted);
+
+    const allCompleted = Object.values(allTestsCompleted).every(test => test === true);
+    setOpen(false);
+    if (allCompleted) {
+      navigate('/results');
+    } else {
+      navigate('/menu');
+    }
   };
 
   const formatTime = (time) => {
@@ -107,7 +128,7 @@ export const ListeningTest = () => {
   return (
     <Container>
       <SectionPageTitle>
-        <PageTitle title='Listening Test' icon={<ArticleIcon />} />
+        <PageTitle title='Listening Test' icon={<HeadsetMicIcon />} />
       </SectionPageTitle>
       <HeaderSection
         formatTime={formatTime}
@@ -163,7 +184,7 @@ export const ListeningTest = () => {
                     color='warning'
                     endIcon={<CustomSendIcon />}
                     sx={{ fontSize: isLgDown && '0.80rem', height: '25px', width: '150px' }}
-                    onClick={() => navigate('/')}
+                    onClick={handleSubmit}
                   >
                     Submit
                   </Button>
@@ -181,6 +202,7 @@ export const ListeningTest = () => {
             </Box>
           </Box>
         </Box>
+        <BackDropComponent open={open}/>
       </Paper>
     </Container>
   );

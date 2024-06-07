@@ -13,30 +13,33 @@ import { ListeningTest } from './Pages/ListeningTest/ListeningTest';
 import { SpeakingTest } from './Pages/SpeakingTest/SpeakingTest';
 import { ResultsTest } from './Pages/ResultsTest/ResultsTest';
 
+import { TestProvider } from './Context/TestProvider';
+
 function App() {
 
   return (
     <>
-    <ThemeProvider theme={theme}>
-      <CssBaseline/>
-      <GlobalStyles styles={globalStyles}/>
-      <BrowserRouter>
-        <Routes>
-          <Route path={Router.appLogin} element={<Login />} />
-          <Route path={Router.appMenu} element={<Layout><Instructions/></Layout>} />
-          <Route path='/' element={<Layout><Menu /></Layout>} />
-          <Route path={Router.appWritingTest} element={<Layout><WritingTest /></Layout>} />
-          <Route path={Router.appReadingTest} element={<Layout><ReadingTest /></Layout>} />
-          <Route path={Router.applisteningTest} element={<Layout><ListeningTest/></Layout>} />
-          <Route path={Router.appSpeakingTest} element={<Layout><SpeakingTest/></Layout>} />
-          <Route path={Router.appResults} element={<Layout><ResultsTest/></Layout>} />
+    <TestProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline/>
+        <GlobalStyles styles={globalStyles}/>
+        <BrowserRouter>
+          <Routes>
+            <Route path={'/'} element={<Login />} />
+            <Route path={Router.appMenu} element={<Layout><Menu /></Layout>} />
+            <Route path={Router.appWritingTest} element={<Layout><WritingTest /></Layout>} />
+            <Route path={Router.appReadingTest} element={<Layout><ReadingTest /></Layout>} />
+            <Route path={Router.applisteningTest} element={<Layout><ListeningTest/></Layout>} />
+            <Route path={Router.appSpeakingTest} element={<Layout><SpeakingTest/></Layout>} />
+            <Route path={Router.appResults} element={<Layout><ResultsTest/></Layout>} />
 
 
-          {/* Ruta para manejar todas las rutas no definidas */}
-          <Route path="*" element={<Login />} />
-        </Routes>
-      </BrowserRouter>
-    </ThemeProvider>
+            {/* Ruta para manejar todas las rutas no definidas */}
+            <Route path="*" element={<Login />} />
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
+    </TestProvider>
     </>
   )
 }
