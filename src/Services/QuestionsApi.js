@@ -44,11 +44,20 @@ export class QuestionApi {
             throw error;
         }
     }
-    
 
     async getSpeakingTest() {
         try {
             const response = await axios.get(`${Router.apiBaseUrl}${Router.apiSpeakingTest}`);
+            return response;
+        } catch (error) {
+            console.error("Error fetching writing test data:", error);
+            throw error;
+        }
+    }
+
+    async getResultsTest() {
+        try {
+            const response = await axios.get(`${Router.apiBaseUrl}${Router.apiResultsTest}`);
             return response;
         } catch (error) {
             console.error("Error fetching writing test data:", error);
