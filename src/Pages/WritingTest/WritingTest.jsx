@@ -11,6 +11,7 @@ import { HeaderSection } from '../../Components/Header/HeaderSection';
 import { CustomTextField } from '../../Components/TextField/TextField';
 // Styles
 import { SectionPageTitle, ContainerQuestion, ContainerContent, CustomTyphography, Container, CustomSendIcon } from './Style';
+import { TypograhpyQuestion } from '../Style';
 
 // API
 import { QuestionApi } from '../../Services/QuestionsApi';
@@ -187,9 +188,9 @@ export const WritingTest = () => {
                 </CustomTyphography>
               </ContainerContent>
               <ContainerContent>
-                <Typography variant="body1" align="left">
+                <TypograhpyQuestion variant="body1" align="left">
                   {data?.questions[currentQuestionIndex].question}
-                </Typography>
+                </TypograhpyQuestion>
               </ContainerContent>
             </ContainerQuestion>
 

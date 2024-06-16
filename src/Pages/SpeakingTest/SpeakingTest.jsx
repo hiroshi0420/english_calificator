@@ -8,8 +8,8 @@ import { PageTitle } from '../../Components/PageTitle/PageTitle';
 import { HeaderSection } from '../../Components/Header/HeaderSection';
 import InterpreterModeIcon from '@mui/icons-material/InterpreterMode';
 // Styles
-import { SectionPageTitle, ContainerQuestion, ContainerContent, CustomTyphography, Container, CustomSendIcon, ContainerRecording } from './Style';
-
+import { SectionPageTitle, ContainerQuestion, ContainerContent, CustomTyphography, Container, CustomSendIcon } from './Style';
+import { TypograhpyQuestion } from '../Style';
 // API
 import { QuestionApi } from '../../Services/QuestionsApi';
 import { RecordingComponent } from '../../Components/Recording/RecordingComponent';
@@ -239,9 +239,9 @@ export const SpeakingTest = () => {
                 </CustomTyphography>
               </ContainerContent>
               <ContainerContent>
-                <Typography variant="body1" align="left">
+                <TypograhpyQuestion variant="body1" align="left">
                   {data?.questions[currentQuestionIndex].question}
-                </Typography>
+                </TypograhpyQuestion>
               </ContainerContent>
             </ContainerQuestion>
 
@@ -251,10 +251,6 @@ export const SpeakingTest = () => {
                 isRecording={isRecording}
                 audioURL={audioURL}
             />
-            {/* <CustomTextField
-              currentQuestion={currentQuestion}
-              handleChange={handleChange}
-            /> */}
 
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Box sx={{ display: 'flex', gap: '1rem' }}>

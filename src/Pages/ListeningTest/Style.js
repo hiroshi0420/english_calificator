@@ -50,10 +50,11 @@ export const ContainerContent = styled(Box)(({ theme, numberQuestion }) => {
 
 export const CustomTyphography = styled(Typography)(({theme}) => {
   return {
-    // color: theme.palette.primary.main,
-    // fontWeight: 'bold',
     fontSize: '1rem',
-    textAlign: 'left'
+    textAlign: 'left',
+    [theme.breakpoints.down('lg')]: {
+      fontSize: '0.80rem',
+    }
   }
 })
 

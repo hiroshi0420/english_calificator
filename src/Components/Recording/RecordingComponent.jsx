@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
-import { Button, Container, Typography, Box } from '@mui/material';
+import React from 'react';
+// Components
+import { Container, Typography, Box } from '@mui/material';
+// Styles
+import { CustomButtonsActions } from '../../Pages/Style';
+// Animations motions
 import { motion } from 'framer-motion';
 
 export const RecordingComponent = ({ handleStartRecording, handleStopRecording, isRecording, audioURL }) => {
 
     return (
-        <Container maxWidth="sm" sx={{ mt: 5 }}>
+        <Container maxWidth="sm" sx={{ mt: 2 }}>
             {isRecording && (
                 <Box textAlign="center" mb={3}>
-                    <Typography variant="h5" component="h2" gutterBottom>
+                    <Typography variant='caption' gutterBottom>
                         Recording...
                     </Typography>
                     <Box display="flex" justifyContent="center" alignItems="center">
@@ -52,33 +56,32 @@ export const RecordingComponent = ({ handleStartRecording, handleStopRecording, 
                     </Box>
                 </Box>
             )}
-            {audioURL && (
+            {!isRecording && audioURL && (
                 <Box textAlign="center">
-                    <Typography variant="h5" component="h2" gutterBottom>
+                    <Typography variant='overline'>
                         Recorded Audio
                     </Typography>
-                    <audio src={audioURL} controls />
+                    <audio src={audioURL} controls style={{ height: '30px'}}/>
                 </Box>
             )}
             <Box display="flex" justifyContent="center" gap={2} mt={2}>
-                <Button
+                <CustomButtonsActions
+                    variant="outlined"
+                    color="secondary"
+                    onClick={handleStopRecording}
+                    disabled={!isRecording}
+                >
+                    Stop Recording
+                </CustomButtonsActions>
+                <CustomButtonsActions
                     variant="contained"
                     color="primary"
                     onClick={handleStartRecording}
                     disabled={isRecording}
                 >
                     Start Recording
-                </Button>
-                <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={handleStopRecording}
-                    disabled={!isRecording}
-                >
-                    Stop Recording
-                </Button>
+                </CustomButtonsActions>
             </Box>
         </Container>
     );
 };
-

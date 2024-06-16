@@ -11,7 +11,7 @@ import { HeaderSection } from '../../Components/Header/HeaderSection';
 import { CustomTextField } from '../../Components/TextField/TextField';
 // Styles
 import { SectionPageTitle, ContainerQuestion, ContainerContent, CustomTyphography, Container, CustomSendIcon, ContainerText } from './Style';
-
+import { TypograhpyQuestion } from '../Style';
 // API
 import { QuestionApi } from '../../Services/QuestionsApi';
 
@@ -185,9 +185,9 @@ export const ReadingTest = () => {
         <Box>
           <Box>
             <ContainerText>
-              <Typography variant='body1'>
+              <TypograhpyQuestion variant='body1'>
                   {data?.text}
-              </Typography>
+              </TypograhpyQuestion>
             </ContainerText>
             <Divider primary='Inbox' />
             <ContainerQuestion>
@@ -197,9 +197,9 @@ export const ReadingTest = () => {
                 </CustomTyphography>
               </ContainerContent>
               <ContainerContent>
-                <Typography variant="body1" align="left">
+                <TypograhpyQuestion variant="body1" align="left">
                   {data?.questions[currentQuestionIndex].question}
-                </Typography>
+                </TypograhpyQuestion>
               </ContainerContent>
             </ContainerQuestion>
 

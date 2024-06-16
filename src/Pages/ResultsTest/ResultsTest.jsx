@@ -1,7 +1,9 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Grid, Card, CardContent, Typography, CircularProgress, Paper, Box, Button } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Container, Grid, Card, CardContent, Typography, CircularProgress, Paper, Box, useTheme, useMediaQuery } from '@mui/material';
+// Styles
+import { CustomSubtitle, CustomBox } from './Style';
+import { CustomButtonsActions } from '../Style';
 
 // Icons
 import DrawIcon from '@mui/icons-material/Draw'; // Writing
@@ -23,6 +25,7 @@ const iconMapping = {
 
 export const ResultsTest = () => {
   const theme = useTheme();
+  const isDownLg = useMediaQuery(theme.breakpoints.down('lg'));
   const navigate = useNavigate();
   const questionApi = new QuestionApi();
   const [data, setData] = useState(null);
@@ -86,10 +89,10 @@ export const ResultsTest = () => {
             </Box>
 
             <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} padding={'15px'} borderRadius={'5px'} bgcolor={theme.palette.primary.main}>
-              <Typography fontWeight={'bold'} color={theme.palette.background.default}>
+              <CustomSubtitle fontWeight={'bold'} color={theme.palette.background.default}>
                 English Level
-              </Typography>
-              <Typography fontSize={'3rem'} color={theme.palette.background.default}>
+              </CustomSubtitle>
+              <Typography fontSize={isDownLg ? '2rem' : '3rem'} color={theme.palette.background.default}>
                 {data?.englishLevel}
               </Typography>
             </Box>
@@ -101,19 +104,19 @@ export const ResultsTest = () => {
             return (
               <Grid item xs={12} sm={6} md={6} key={index}>
                 <Card sx={{ display: 'flex', alignItems: 'center', maxWidth: 600, borderBottom: `4px solid ${theme.palette.primary.main}` }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 140, height: 140 }}>
+                  <CustomBox>
                     <IconComponent style={{ fontSize: 64 }} />
-                  </Box>
+                  </CustomBox>
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
                       {detail.testName}
                     </Typography>
-                    <Typography variant="body2" color="textSecondary">
+                    <CustomSubtitle variant="body2" color="textSecondary">
                       <span style={{ fontWeight: 'bold' }}>Score Percentage:</span> {detail.scorePercentage}%
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
+                    </CustomSubtitle>
+                    <CustomSubtitle variant="body2" color="textSecondary">
                       <span style={{ fontWeight: 'bold' }}>English Level:</span> {detail.englishLevel}
-                    </Typography>
+                    </CustomSubtitle>
                   </CardContent>
                 </Card>
               </Grid>
@@ -122,9 +125,9 @@ export const ResultsTest = () => {
         </Grid>
         <BackDropComponent open={open}/>
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
-          <Button variant="contained" color="primary" onClick={handleReset}>
+          <CustomButtonsActions variant="contained" color="primary" onClick={handleReset}>
             Back to menu
-          </Button>
+          </CustomButtonsActions>
         </Box>
       </Container>
     </Paper>

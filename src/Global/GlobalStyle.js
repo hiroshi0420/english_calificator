@@ -24,8 +24,6 @@ export const theme = createTheme({
     palette: {
         primary: {
             main: colors.blueDark,
-            // main: colors.blueLight,
-
         },
         secondary: {
             main: colors.blueLight,
@@ -90,11 +88,12 @@ export const globalStyles = `
     margin: 0 auto;
     overscroll-behavior: none;
     width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   #root {
     box-shadow: 0 0 10px rgba(0, 0, 0, .05);
-    overflow-x: hidden;
     min-height: 100vh;
   }
 
@@ -130,5 +129,30 @@ export const globalStyles = `
 
   textarea {
     font-family: 'Poppins', sans-serif;
+  }
+
+  /* Estilos personalizados para la barra de desplazamiento */
+  * {
+    &::-webkit-scrollbar {
+      width: 4px; /* Controla el ancho de la barra de desplazamiento para Chrome, Safari y Edge */
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1; /* Color de fondo de la pista de la barra de desplazamiento */
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: ${colors.blueDark}; /* Color de fondo del control deslizante de la barra de desplazamiento */
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: '#555'; /* Color de fondo del control deslizante de la barra de desplazamiento cuando se pasa el mouse */
+    }
+  }
+
+  @media (max-width: ${theme.breakpoints.values.lg}px) {
+    ::placeholder {
+      font-size: 0.80rem; /* Tamaño cuando la pantalla es menor que lg */
+    }
   }
 `;

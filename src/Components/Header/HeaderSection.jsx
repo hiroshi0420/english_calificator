@@ -28,7 +28,7 @@ export const HeaderSection = ({ progress, totalMarks, formatTime, timeLeft }) =>
                             align="left"
                             sx={{ fontSize: isLgDown && '0.80rem' }}
                         >
-                            Approximations Questions And Answers Updated Daily
+                            This test will be evaluated using IA
                         </Typography>
                     </SectionLeft>
                     <SectionRight>
@@ -55,7 +55,7 @@ export const HeaderSection = ({ progress, totalMarks, formatTime, timeLeft }) =>
                 <ContainerRight>
                     <AccessTimeFilledIcon style={{ marginRight: '8px' }} />
                     <Typography
-                        variant="body2"
+                        variant="body1"
                         fontWeight='bold'
                         sx={{ fontSize: isLgDown && '0.80rem' }}
                     >
