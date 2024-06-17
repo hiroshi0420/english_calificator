@@ -1,11 +1,15 @@
 import React, { useState, useContext } from 'react';
-import { AppBar, Toolbar, Button, Card, CardContent, Grid } from '@mui/material';
+import { AppBar, Toolbar, Button, Card, CardContent, Grid, ButtonBase } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import DialogComponent from '../../Components/Dialog/DialogComponent';
 import Router from '../../Router/router';
 import { TestContext } from '../../Context/TestProvider';
-import {BackDropComponent} from '../../Components/BackDrop/BackDropComponet';
+import { BackDropComponent } from '../../Components/BackDrop/BackDropComponet';
+import AutoStoriesIcon from '@mui/icons-material/AutoStories'; // Reading
+import HeadsetMicIcon from '@mui/icons-material/HeadsetMic'; // Listening
+import InterpreterModeIcon from '@mui/icons-material/InterpreterMode'; // Speaking
+import ArticleIcon from '@mui/icons-material/Article'; // Writing
 
 export const Menu = () => {
   const theme = useTheme();
@@ -41,68 +45,92 @@ export const Menu = () => {
       <CardContent>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
-            <Card style={{ padding: theme.spacing(2), backgroundColor: theme.palette.background.paper }}>
-              <AppBar position="static" style={{ backgroundColor: completedTests.writing ? '#d3d3d3' : theme.palette.primary.main }}>
-                <Toolbar>
-                  <Button
-                    color="inherit"
-                    style={{ marginRight: theme.spacing(2), color: theme.palette.customGray.main }}
-                    onClick={() => handleNavigation(Router.appWritingTest, 'Writing Test', 'Writing')}
-                    disabled={completedTests.writing}
-                  >
-                    Writing
-                  </Button>
-                </Toolbar>
-              </AppBar>
-            </Card>
+            <ButtonBase
+              onClick={() => handleNavigation(Router.appWritingTest, 'Writing Test', 'Writing')}
+              disabled={completedTests.writing}
+              style={{ width: '100%' }}
+            >
+              <Card style={{ padding: theme.spacing(2), backgroundColor: theme.palette.background.paper, width: '100%' }}>
+                <AppBar position="static" style={{ backgroundColor: completedTests.writing ? '#d3d3d3' : theme.palette.primary.main }}>
+                  <Toolbar>
+                    <Button
+                      color="inherit"
+                      startIcon={<ArticleIcon />}
+                      style={{ marginRight: theme.spacing(2), color: theme.palette.customGray.main, justifyContent: 'flex-start' }}
+                      disabled={completedTests.writing}
+                    >
+                      Writing
+                    </Button>
+                  </Toolbar>
+                </AppBar>
+              </Card>
+            </ButtonBase>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Card style={{ padding: theme.spacing(2), backgroundColor: theme.palette.background.paper }}>
-              <AppBar position="static" style={{ backgroundColor: completedTests.reading ? '#d3d3d3' : theme.palette.primary.main }}>
-                <Toolbar>
-                  <Button
-                    color="inherit"
-                    style={{ color: theme.palette.customGray.main }}
-                    onClick={() => handleNavigation(Router.appReadingTest, 'Reading Test', 'Reading')}
-                    disabled={completedTests.reading} // Deshabilitar botón si la prueba está completada
-                  >
-                    Reading
-                  </Button>
-                </Toolbar>
-              </AppBar>
-            </Card>
+            <ButtonBase
+              onClick={() => handleNavigation(Router.appReadingTest, 'Reading Test', 'Reading')}
+              disabled={completedTests.reading}
+              style={{ width: '100%' }}
+            >
+              <Card style={{ padding: theme.spacing(2), backgroundColor: theme.palette.background.paper, width: '100%' }}>
+                <AppBar position="static" style={{ backgroundColor: completedTests.reading ? '#d3d3d3' : theme.palette.primary.main }}>
+                  <Toolbar>
+                    <Button
+                      color="inherit"
+                      startIcon={<AutoStoriesIcon />}
+                      style={{ color: theme.palette.customGray.main, justifyContent: 'flex-start' }}
+                      disabled={completedTests.reading}
+                    >
+                      Reading
+                    </Button>
+                  </Toolbar>
+                </AppBar>
+              </Card>
+            </ButtonBase>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Card style={{ padding: theme.spacing(2), backgroundColor: theme.palette.background.paper }}>
-              <AppBar position="static" style={{ backgroundColor: completedTests.speaking ? '#d3d3d3' : theme.palette.primary.main }}>
-                <Toolbar>
-                  <Button
-                    color="inherit"
-                    style={{ marginRight: theme.spacing(2), color: theme.palette.customGray.main }}
-                    onClick={() => handleNavigation(Router.appSpeakingTest, 'Speaking Test', 'Speaking')}
-                    disabled={completedTests.speaking} // Deshabilitar botón si la prueba está completada
-                  >
-                    Speaking
-                  </Button>
-                </Toolbar>
-              </AppBar>
-            </Card>
+            <ButtonBase
+              onClick={() => handleNavigation(Router.appSpeakingTest, 'Speaking Test', 'Speaking')}
+              disabled={completedTests.speaking}
+              style={{ width: '100%' }}
+            >
+              <Card style={{ padding: theme.spacing(2), backgroundColor: theme.palette.background.paper, width: '100%' }}>
+                <AppBar position="static" style={{ backgroundColor: completedTests.speaking ? '#d3d3d3' : theme.palette.primary.main }}>
+                  <Toolbar>
+                    <Button
+                      color="inherit"
+                      startIcon={<InterpreterModeIcon />}
+                      style={{ marginRight: theme.spacing(2), color: theme.palette.customGray.main, justifyContent: 'flex-start' }}
+                      disabled={completedTests.speaking}
+                    >
+                      Speaking
+                    </Button>
+                  </Toolbar>
+                </AppBar>
+              </Card>
+            </ButtonBase>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Card style={{ padding: theme.spacing(2), backgroundColor: theme.palette.background.paper }}>
-              <AppBar position="static" style={{ backgroundColor: completedTests.listening ? '#d3d3d3' : theme.palette.primary.main }}>
-                <Toolbar>
-                  <Button
-                    color="inherit"
-                    style={{ color: theme.palette.customGray.main }}
-                    onClick={() => handleNavigation(Router.applisteningTest, 'Listening Test', 'Listening')}
-                    disabled={completedTests.listening} // Deshabilitar botón si la prueba está completada
-                  >
-                    Listening
-                  </Button>
-                </Toolbar>
-              </AppBar>
-            </Card>
+            <ButtonBase
+              onClick={() => handleNavigation(Router.applisteningTest, 'Listening Test', 'Listening')}
+              disabled={completedTests.listening}
+              style={{ width: '100%' }}
+            >
+              <Card style={{ padding: theme.spacing(2), backgroundColor: theme.palette.background.paper, width: '100%' }}>
+                <AppBar position="static" style={{ backgroundColor: completedTests.listening ? '#d3d3d3' : theme.palette.primary.main }}>
+                  <Toolbar>
+                    <Button
+                      color="inherit"
+                      startIcon={<HeadsetMicIcon />}
+                      style={{ color: theme.palette.customGray.main, justifyContent: 'flex-start' }}
+                      disabled={completedTests.listening}
+                    >
+                      Listening
+                    </Button>
+                  </Toolbar>
+                </AppBar>
+              </Card>
+            </ButtonBase>
           </Grid>
         </Grid>
       </CardContent>

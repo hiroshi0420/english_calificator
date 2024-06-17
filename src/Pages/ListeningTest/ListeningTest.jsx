@@ -13,7 +13,6 @@ import IconButton from '@mui/material/IconButton';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 // Styles
 import { SectionPageTitle, ContainerQuestion, ContainerContent, CustomTyphography, Container, CustomSendIcon, ContainerOptions } from './Style';
-
 // API
 import { QuestionApi } from '../../Services/QuestionsApi';
 
@@ -152,7 +151,7 @@ export const ListeningTest = () => {
               </ContainerContent>
             </ContainerQuestion>
 
-            <audio controls src={`data:audio/mp3;base64,${audioBase64}`} />
+            <audio controls src={`data:audio/mp3;base64,${audioBase64}`} style={{ height: '30px'}}/>
 
             <ContainerOptions>
               {data?.[currentQuestionIndex]?.questionSet[currentQuestionIndex]?.options.map((option, index) => (

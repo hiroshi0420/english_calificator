@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Toolbar, Typography, Box, IconButton, MenuItem, Menu, Badge } from '@mui/material';
+import { Toolbar, Typography, Box, IconButton, MenuItem, Menu, Badge, useMediaQuery, useTheme } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
@@ -19,6 +19,9 @@ const Navbar = () => {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const navigate = useNavigate();
+
+  const theme = useTheme();
+  const isLgDown = useMediaQuery(theme.breakpoints.down('lg'));
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -59,9 +62,10 @@ const Navbar = () => {
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
+      sx={{ top: '22px' }}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      <MenuItem onClick={handleMenuClose} sx={{ fontSize: isLgDown ? '0.875rem' : '1rem' }}>Profile</MenuItem>
+      <MenuItem onClick={handleLogout} sx={{ fontSize: isLgDown ? '0.875rem' : '1rem' }}>Logout</MenuItem>
     </Menu>
   );
 
@@ -139,20 +143,6 @@ const Navbar = () => {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            {/* <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton> */}
             <IconButton
               size="large"
               edge="end"
