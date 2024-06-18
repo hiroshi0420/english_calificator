@@ -67,14 +67,23 @@ export class QuestionApi {
 
 
     async sendWritingTest(data) {
-        return await axios.post(Router.apiBaseUrl + Router.apiWritingTest, {
-            question: data?.question,
-            response: data?.response
-        }).then(response => {
-            return response
-        }).catch(error => {
-            return error
-        })
+        return await axios.post(Router.apiBaseUrl + Router.apiWritingTest, data)
+            .then(response => {
+                return response
+            })
+            .catch(error => {
+                return error
+            });
+    }
+
+    async sendReadingTest(data) {
+        return await axios.post(Router.apiBaseUrl + Router.apiWritingTest, data)
+            .then(response => {
+                return response
+            })
+            .catch(error => {
+                return error
+            });
     }
 
 

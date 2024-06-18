@@ -21,7 +21,7 @@ import { BackDropComponent } from '../../Components/BackDrop/BackDropComponet';
 
 export const WritingTest = () => {
   const questionApi = new QuestionApi();
-  const { completedTests, setCompletedTests } = useContext(TestContext);
+  const { completedTests, setCompletedTests, setRespTest } = useContext(TestContext);
   const navigate = useNavigate();
 
   const theme = useTheme();
@@ -49,7 +49,7 @@ export const WritingTest = () => {
         // Establecer la primera pregunta en el estado actual
         setCurrentQuestion({ question: resp.questions[0].question, response: '' });
         // Inicializar el estado de todas las respuestas
-        setAllResponses(resp.questions.map((q) => ({ question: q.question, response: '' })));
+        setAllResponses(resp.questions.map((q) => ({ id: q.id, question: q.question, response: '' })));
       } else {
         console.error('Error al cargar preguntas:', response.statusText);
       }
@@ -65,6 +65,7 @@ export const WritingTest = () => {
       let response = await questionApi.sendWritingTest(allResponses);
       if (response.status === 200) {
         let resp = response.data;
+        setRespTest((prevState) => [...prevState, { test: 'writing', data: resp }]);
         console.log('Respuestas enviadas:', resp);
       } else {
         console.error('Error al enviar respuestas:', response.statusText);
@@ -139,11 +140,11 @@ export const WritingTest = () => {
   const handleSubmit = () => {
     setOpen(true);
     // Guardar la respuesta actual en el estado de respuestas
-    // const updatedAllResponses = [...allResponses];
-    // updatedAllResponses[currentQuestionIndex].response = currentQuestion.response;
-    // setAllResponses(updatedAllResponses);
+    const updatedAllResponses = [...allResponses];
+    updatedAllResponses[currentQuestionIndex].response = currentQuestion.response;
+    setAllResponses(updatedAllResponses);
 
-    // sendAnswer();
+    sendAnswer();
     const allTestsCompleted = {
       ...completedTests,
       writing: true,
