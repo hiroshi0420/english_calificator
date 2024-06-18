@@ -199,12 +199,17 @@ export const SpeakingTest = () => {
         audioChunks.push(event.data);
       };
 
-      mediaRecorder.onstop = () => {
+      mediaRecorder.onstop = async () => {
         const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
         const audioUrl = URL.createObjectURL(audioBlob);
         setAudioURL(audioUrl);
         setIsRecording(false);
+
+        // Convert Blob to Base64
+        const base64Audio = await blobToBase64(audioBlob);
+        setCurrentQuestion({ ...currentQuestion, response: base64Audio });
       };
+
 
       setTimeout(() => {
         mediaRecorder.stop();
@@ -216,6 +221,15 @@ export const SpeakingTest = () => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
     }
+  };
+
+  const blobToBase64 = (blob) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
   };
 
   return (
