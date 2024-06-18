@@ -47,10 +47,6 @@ export const ResultsTest = () => {
     }, 1000);
   };
 
-  // if (loading) {
-  //   return <CircularProgress />;
-  // }
-
   if (!respTest || respTest.length === 0) {
     return <div>No results found.</div>;
   }
@@ -73,39 +69,62 @@ export const ResultsTest = () => {
         {respTest.map((testResult, index) => {
           const IconComponent = iconMapping[testResult.test.toLowerCase()];
           return (
-            <Box key={index} my={2} sx={{borderBottom: `4px solid ${theme.palette.primary.main}`}}>
-              <Card sx={{ display: 'flex', alignItems: 'center' }}>
-                <CustomBox>
-                  <IconComponent style={{ fontSize: 64 }} />
-                </CustomBox>
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {testResult.test.toUpperCase()}
-                  </Typography>
-                  <CustomSubtitle variant="body2" color="textSecondary">
-                    <span style={{ fontWeight: 'bold' }}>English Level:</span> {testResult.data?.englishLevel}
-                  </CustomSubtitle>
-                </CardContent>
-              <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Question</TableCell>
-                      <TableCell>Level</TableCell>
-                      <TableCell>Justification</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {testResult.data.responseDetails?.map((detail, detailIndex) => (
-                      <TableRow key={detailIndex}>
-                        <TableCell>{detailIndex + 1}</TableCell>
-                        <TableCell>{detail.level}</TableCell>
-                        <TableCell>{detail.justification}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+            <Box key={index} my={2} sx={{ borderBottom: `4px solid ${theme.palette.primary.main}` }}>
+              <Card sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', width: '30%' }}>
+                  <CustomBox>
+                    <IconComponent style={{ fontSize: 64 }} />
+                  </CustomBox>
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {testResult.test.toUpperCase()}
+                    </Typography>
+                    <CustomSubtitle variant="body2" color="textSecondary">
+                      <span style={{ fontWeight: 'bold' }}>English Level:</span> {testResult.data?.englishLevel}
+                    </CustomSubtitle>
+                  </CardContent>
+                </Box>
+                <TableContainer component={Paper} sx={{ width: '100%' }}>
+                  {testResult.test.toLowerCase() === 'listening' ? (
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>English Level</TableCell>
+                          <TableCell>Correct Answers</TableCell>
+                          <TableCell>Incorrect Answers</TableCell>
+                          <TableCell>Total Questions</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell>{testResult.data?.englishLevel}</TableCell>
+                          <TableCell>{testResult.data?.correctAnswers}</TableCell>
+                          <TableCell>{testResult.data?.incorrectAnswers}</TableCell>
+                          <TableCell>{testResult.data?.totalQuestions}</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  ) : (
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Question</TableCell>
+                          <TableCell>Level</TableCell>
+                          <TableCell>Justification</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {testResult.data.responseDetails?.map((detail, detailIndex) => (
+                          <TableRow key={detailIndex}>
+                            <TableCell>{detailIndex + 1}</TableCell>
+                            <TableCell>{detail.level}</TableCell>
+                            <TableCell>{detail.justification}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  )}
+                </TableContainer>
               </Card>
             </Box>
           );

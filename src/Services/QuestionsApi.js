@@ -35,7 +35,7 @@ export class QuestionApi {
         try {
             const response = await axios.get(`${Router.apiBaseUrl}${Router.apiListeningTest}`, {
                 params: {
-                    questionsNumber: 3
+                    questionsNumber: 1
                 }
             });
             return response;
@@ -65,6 +65,7 @@ export class QuestionApi {
         }
     }
 
+    // Post
 
     async sendWritingTest(data) {
         return await axios.post(Router.apiBaseUrl + Router.apiWritingTest, data)
@@ -77,7 +78,27 @@ export class QuestionApi {
     }
 
     async sendReadingTest(data) {
-        return await axios.post(Router.apiBaseUrl + Router.apiWritingTest, data)
+        return await axios.post(Router.apiBaseUrl + Router.apiReadingTest, data)
+            .then(response => {
+                return response
+            })
+            .catch(error => {
+                return error
+            });
+    }
+
+    async sendSpeakingTest(data) {
+        return await axios.post(Router.apiBaseUrl + Router.apiSpeakingTest, data)
+            .then(response => {
+                return response
+            })
+            .catch(error => {
+                return error
+            });
+    }
+
+    async sendListeningTest(data) {
+        return await axios.post(Router.apiBaseUrl + Router.apiListeningTest, data)
             .then(response => {
                 return response
             })

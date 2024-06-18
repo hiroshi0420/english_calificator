@@ -40,6 +40,7 @@ export const ReadingTest = () => {
   const [timeLeft, setTimeLeft] = useState(10 * 60);
   const progress = ((currentQuestionIndex + 1) / (data?.questions.length || 1)) * 100;
 
+  console.log('data', data)
   const loadQuestions = async () => {
     try {
       let response = await questionApi.getReadingTest();

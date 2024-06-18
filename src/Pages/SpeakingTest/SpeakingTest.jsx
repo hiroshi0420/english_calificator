@@ -20,7 +20,7 @@ import { BackDropComponent } from '../../Components/BackDrop/BackDropComponet';
 
 export const SpeakingTest = () => {
   const navigate = useNavigate();
-  const { completedTests, setCompletedTests } = useContext(TestContext);
+  const { completedTests, setCompletedTests, setRespTest } = useContext(TestContext);
   const questionApi = new QuestionApi();
 
   const theme = useTheme();
@@ -63,13 +63,14 @@ export const SpeakingTest = () => {
     }
   };
 
+  console.log('allResponses', allResponses)
   const sendAnswer = async () => {
     try {
-      console.log('allResponses', allResponses)
 
-      let response = await questionApi.sendWritingTest(allResponses);
+      let response = await questionApi.sendSpeakingTest(allResponses);
       if (response.status === 200) {
         let resp = response.data;
+        setRespTest((prevState) => [...prevState, { test: 'speaking', data: resp }]);
         console.log('Respuestas enviadas:', resp);
       } else {
         console.error('Error al enviar respuestas:', response.statusText);
@@ -144,11 +145,11 @@ export const SpeakingTest = () => {
   const handleSubmit = () => {
     setOpen(true);
     // Guardar la respuesta actual en el estado de respuestas
-    // const updatedAllResponses = [...allResponses];
-    // updatedAllResponses[currentQuestionIndex].response = currentQuestion.response;
-    // setAllResponses(updatedAllResponses);
+    const updatedAllResponses = [...allResponses];
+    updatedAllResponses[currentQuestionIndex].response = currentQuestion.response;
+    setAllResponses(updatedAllResponses);
 
-    // sendAnswer();
+    sendAnswer();
     const allTestsCompleted = {
       ...completedTests,
       speaking: true,

@@ -33,7 +33,7 @@ export const ContainerContent = styled(Box)(({ theme, numberQuestion }) => {
     display: numberQuestion && 'flex',
     alignItems: numberQuestion && 'center',
     justifyContent: numberQuestion && 'center',
-    width: numberQuestion ? '10%' : '90%',
+    width: numberQuestion ? '10%' : '100%',
     borderRadius: numberQuestion ? '4px 0 0 4px' : '0 4px 4px 0',
     maxHeight: '150px',
     overflow: 'auto',
