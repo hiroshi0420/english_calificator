@@ -4,13 +4,10 @@ import { useNavigate } from 'react-router-dom';
 // MUI
 import { Paper, Button, Box, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import ArticleIcon from '@mui/icons-material/Article';
 import HeadsetMicIcon from '@mui/icons-material/HeadsetMic';
 // Components
 import { PageTitle } from '../../Components/PageTitle/PageTitle';
 import { HeaderSection } from '../../Components/Header/HeaderSection';
-import IconButton from '@mui/material/IconButton';
-import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 // Styles
 import { SectionPageTitle, ContainerQuestion, ContainerContent, CustomTyphography, Container, CustomSendIcon, ContainerOptions } from './Style';
 // API
@@ -22,7 +19,7 @@ import { BackDropComponent } from '../../Components/BackDrop/BackDropComponet';
 
 export const ListeningTest = () => {
   const navigate = useNavigate();
-  const { completedTests, setCompletedTests } = useContext(TestContext);
+  const { completedTests, setCompletedTests, setRespTest } = useContext(TestContext);
   const questionApi = new QuestionApi();
 
   const theme = useTheme();
@@ -34,15 +31,16 @@ export const ListeningTest = () => {
   const [timeLeft, setTimeLeft] = useState(10 * 60);
   const [audioBase64, setAudioBase64] = useState('');
 
-  const progress = ((currentQuestionIndex + 1) / (data?.length || 1)) * 100;
+  const progress = ((currentQuestionIndex + 1) / (data?.[0]?.questionSet?.length || 1)) * 100;
 
   const loadQuestions = async () => {
     try {
       let response = await questionApi.getListeningTest();
       if (response.status === 200) {
         let resp = response.data;
+        console.log('Loaded data:', resp);
         setData(resp);
-        setResponses(resp.map(() => ({ response: '' })));
+        setResponses(resp[0].questionSet.map(() => ({ response: '' })));
         setAudioBase64(resp[0].audioAsBase64);  // Set initial audio
       } else {
         console.error('Error al cargar preguntas:', response.statusText);
@@ -54,11 +52,21 @@ export const ListeningTest = () => {
 
   const sendAnswer = async () => {
     try {
-      console.log('allResponses', responses);
+      const requestPayload = {
+        id: data[0].id,
+        innerQuestionIds: data[0].questionSet.map(q => q.id),
+        innerResponseIndexes: responses.map((response, index) => {
+          const optionIndex = data[0].questionSet[index].options.indexOf(response.response);
+          return optionIndex + 1; // Sumar 1 porque los índices inician en 1
+        }),
+      };
 
-      let response = await questionApi.sendWritingTest(responses);
+      console.log('Request Payload:', requestPayload);
+
+      let response = await questionApi.sendListeningTest([requestPayload]);
       if (response.status === 200) {
         let resp = response.data;
+        setRespTest((prevState) => [...prevState, { test: 'listening', data: resp }]);
         console.log('Respuestas enviadas:', resp);
       } else {
         console.error('Error al enviar respuestas:', response.statusText);
@@ -69,16 +77,14 @@ export const ListeningTest = () => {
   };
 
   const handleNext = () => {
-    if (currentQuestionIndex < data?.length - 1) {
+    if (currentQuestionIndex < data?.[0]?.questionSet?.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setAudioBase64(data[currentQuestionIndex + 1].audioAsBase64);  // Update audio for next question
     }
   };
 
   const handleBack = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
-      setAudioBase64(data[currentQuestionIndex - 1].audioAsBase64);  // Update audio for previous question
     }
   };
 
@@ -100,9 +106,15 @@ export const ListeningTest = () => {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    if (data) {
+      setAudioBase64(data[0].audioAsBase64);  // Update audio whenever data changes
+    }
+  }, [data]);
+
   const handleSubmit = () => {
     setOpen(true);
-    // sendAnswer();
+    sendAnswer();
     const allTestsCompleted = {
       ...completedTests,
       listening: true,
@@ -133,28 +145,22 @@ export const ListeningTest = () => {
         formatTime={formatTime}
         timeLeft={timeLeft}
         progress={progress}
-        totalMarks={`${currentQuestionIndex + 1}/${data?.length}`}
+        totalMarks={`${currentQuestionIndex + 1}/${data?.[0]?.questionSet?.length}`}
       />
       <Paper elevation={0} sx={{ padding: '0 24px 24px' }}>
         <Box>
           <Box>
+            <audio controls src={`data:audio/mp3;base64,${audioBase64}`} style={{ height: '30px'}}/>
             <ContainerQuestion>
-              <ContainerContent numberQuestion={true}>
-                <IconButton>
-                  <VolumeUpIcon />
-                </IconButton>
-              </ContainerContent>
               <ContainerContent>
                 <CustomTyphography variant="body1" align="left">
-                  {String(currentQuestionIndex + 1).padStart(2, '0')}. {data?.[currentQuestionIndex]?.questionSet[currentQuestionIndex]?.question}
+                  {String(currentQuestionIndex + 1).padStart(2, '0')}. {data?.[0]?.questionSet?.[currentQuestionIndex]?.question}
                 </CustomTyphography>
               </ContainerContent>
             </ContainerQuestion>
 
-            <audio controls src={`data:audio/mp3;base64,${audioBase64}`} style={{ height: '30px'}}/>
-
             <ContainerOptions>
-              {data?.[currentQuestionIndex]?.questionSet[currentQuestionIndex]?.options.map((option, index) => (
+              {data?.[0]?.questionSet?.[currentQuestionIndex]?.options.map((option, index) => (
                 <Button
                   variant={responses[currentQuestionIndex]?.response === option ? "contained" : "outlined"}
                   onClick={() => handleOptionChange(currentQuestionIndex, option)}
@@ -177,7 +183,7 @@ export const ListeningTest = () => {
                 >
                   Back
                 </Button>
-                {currentQuestionIndex === data?.length - 1 ? (
+                {currentQuestionIndex === data?.[0]?.questionSet?.length - 1 ? (
                   <Button
                     variant='contained'
                     color='warning'
@@ -192,7 +198,7 @@ export const ListeningTest = () => {
                     variant='contained'
                     sx={{ fontSize: isLgDown && '0.80rem', height: '25px', width: '150px' }}
                     onClick={handleNext}
-                    disabled={currentQuestionIndex === data?.length - 1}
+                    disabled={currentQuestionIndex === data?.[0]?.questionSet?.length - 1}
                   >
                     Next
                   </Button>

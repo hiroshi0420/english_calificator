@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 // MUI
 import { Paper, Typography, Button, Box, useMediaQuery } from '@mui/material';
@@ -23,7 +23,7 @@ import { BackDropComponent } from '../../Components/BackDrop/BackDropComponet';
 
 export const ReadingTest = () => {
   const questionApi = new QuestionApi();
-  const { completedTests, setCompletedTests } = useContext(TestContext);
+  const { completedTests, setCompletedTests, setRespTest } = useContext(TestContext);
   const navigate = useNavigate();
 
   const theme = useTheme();
@@ -40,6 +40,7 @@ export const ReadingTest = () => {
   const [timeLeft, setTimeLeft] = useState(10 * 60);
   const progress = ((currentQuestionIndex + 1) / (data?.questions.length || 1)) * 100;
 
+  console.log('data', data)
   const loadQuestions = async () => {
     try {
       let response = await questionApi.getReadingTest();
@@ -51,7 +52,7 @@ export const ReadingTest = () => {
         // Establecer la primera pregunta en el estado actual
         setCurrentQuestion({ question: resp.questions[0].question, response: '' });
         // Inicializar el estado de todas las respuestas
-        setAllResponses(resp.questions.map((q) => ({ question: q.question, response: '' })));
+        setAllResponses(resp.questions.map((q) => ({ id: q.id, question: q.question, response: '' })));
       } else {
         console.error('Error al cargar preguntas:', response.statusText);
       }
@@ -60,15 +61,16 @@ export const ReadingTest = () => {
     }
   };
 
-  console.log('data', data)
+  // console.log('data', data)
 
   const sendAnswer = async () => {
     try {
       console.log('allResponses', allResponses)
 
-      let response = await questionApi.sendWritingTest(allResponses);
+      let response = await questionApi.sendReadingTest(allResponses);
       if (response.status === 200) {
         let resp = response.data;
+        setRespTest((prevState) => [...prevState, { test: 'reading', data: resp }]);
         console.log('Respuestas enviadas:', resp);
       } else {
         console.error('Error al enviar respuestas:', response.statusText);
@@ -143,11 +145,11 @@ export const ReadingTest = () => {
   const handleSubmit = () => {
     setOpen(true);
     // Guardar la respuesta actual en el estado de respuestas
-    // const updatedAllResponses = [...allResponses];
-    // updatedAllResponses[currentQuestionIndex].response = currentQuestion.response;
-    // setAllResponses(updatedAllResponses);
+    const updatedAllResponses = [...allResponses];
+    updatedAllResponses[currentQuestionIndex].response = currentQuestion.response;
+    setAllResponses(updatedAllResponses);
 
-    // sendAnswer();
+    sendAnswer();
     const allTestsCompleted = {
       ...completedTests,
       reading: true,

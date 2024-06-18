@@ -1,14 +1,14 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Grid, Card, CardContent, Typography, CircularProgress, Paper, Box, useTheme, useMediaQuery } from '@mui/material';
+import { Container, Grid, Card, CardContent, Typography, CircularProgress, Paper, Box, useTheme, useMediaQuery, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 // Styles
 import { CustomSubtitle, CustomBox } from './Style';
 import { CustomButtonsActions } from '../Style';
 
 // Icons
 import DrawIcon from '@mui/icons-material/Draw'; // Writing
-import AutoStoriesIcon from '@mui/icons-material/AutoStories'; // reading
-import InterpreterModeIcon from '@mui/icons-material/InterpreterMode'; // speaking
+import AutoStoriesIcon from '@mui/icons-material/AutoStories'; // Reading
+import InterpreterModeIcon from '@mui/icons-material/InterpreterMode'; // Speaking
 import HeadphonesIcon from '@mui/icons-material/Headphones'; // Listening
 
 import { QuestionApi } from '../../Services/QuestionsApi';
@@ -17,10 +17,10 @@ import { TestContext } from '../../Context/TestProvider';
 import { BackDropComponent } from '../../Components/BackDrop/BackDropComponet';
 
 const iconMapping = {
-  Listening: HeadphonesIcon,
-  Reading: AutoStoriesIcon,
-  Speaking: InterpreterModeIcon,
-  Writing: DrawIcon,
+  writing: DrawIcon,
+  reading: AutoStoriesIcon,
+  speaking: InterpreterModeIcon,
+  listening: HeadphonesIcon,
 };
 
 export const ResultsTest = () => {
@@ -28,26 +28,10 @@ export const ResultsTest = () => {
   const isDownLg = useMediaQuery(theme.breakpoints.down('lg'));
   const navigate = useNavigate();
   const questionApi = new QuestionApi();
-  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
-  const { setCompletedTests } = useContext(TestContext);
-
-  const loadResults = async () => {
-    try {
-      const result = await questionApi.getResultsTest();
-      console.log('result from API:', result);
-      setData(result.data);
-    } catch (error) {
-      console.error("Error fetching results:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    loadResults();
-  }, []);
+  const { setCompletedTests, respTest } = useContext(TestContext);
+  console.log('respTest', respTest);
 
   const handleReset = () => {
     setOpen(true);
@@ -63,11 +47,7 @@ export const ResultsTest = () => {
     }, 1000);
   };
 
-  if (loading) {
-    return <CircularProgress />;
-  }
-
-  if (!data) {
+  if (!respTest || respTest.length === 0) {
     return <div>No results found.</div>;
   }
 
@@ -81,49 +61,75 @@ export const ResultsTest = () => {
                 Test Results
               </Typography>
               <Typography variant="h6" fontSize={'0.80rem'}>
-                <span style={{ fontWeight: 'bold' }}>Total Evaluated Sections:</span> {data?.totalEvaluatedSections}
-              </Typography>
-              <Typography variant="h6" fontSize={'0.80rem'}>
-                <span style={{ fontWeight: 'bold' }}>Score Percentage:</span> {data?.scorePercentage}%
-              </Typography>
-            </Box>
-
-            <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} padding={'15px'} borderRadius={'5px'} bgcolor={theme.palette.primary.main}>
-              <CustomSubtitle fontWeight={'bold'} color={theme.palette.background.default}>
-                English Level
-              </CustomSubtitle>
-              <Typography fontSize={isDownLg ? '2rem' : '3rem'} color={theme.palette.background.default}>
-                {data?.englishLevel}
+                <span style={{ fontWeight: 'bold' }}>Total Evaluated Sections:</span> {respTest.length}
               </Typography>
             </Box>
           </Card>
         </Grid>
-        <Grid container spacing={2} mt={1} justifyContent="center">
-          {data?.resultDetails?.slice(0, 4).map((detail, index) => {
-            const IconComponent = iconMapping[detail.testName];
-            return (
-              <Grid item xs={12} sm={6} md={6} key={index}>
-                <Card sx={{ display: 'flex', alignItems: 'center', maxWidth: 600, borderBottom: `4px solid ${theme.palette.primary.main}` }}>
+        {respTest.map((testResult, index) => {
+          const IconComponent = iconMapping[testResult.test.toLowerCase()];
+          return (
+            <Box key={index} my={2} sx={{ borderBottom: `4px solid ${theme.palette.primary.main}` }}>
+              <Card sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', width: '30%' }}>
                   <CustomBox>
                     <IconComponent style={{ fontSize: 64 }} />
                   </CustomBox>
-                  <CardContent>
+                  <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="div">
-                      {detail.testName}
+                      {testResult.test.toUpperCase()}
                     </Typography>
                     <CustomSubtitle variant="body2" color="textSecondary">
-                      <span style={{ fontWeight: 'bold' }}>Score Percentage:</span> {detail.scorePercentage}%
-                    </CustomSubtitle>
-                    <CustomSubtitle variant="body2" color="textSecondary">
-                      <span style={{ fontWeight: 'bold' }}>English Level:</span> {detail.englishLevel}
+                      <span style={{ fontWeight: 'bold' }}>English Level:</span> {testResult.data?.englishLevel}
                     </CustomSubtitle>
                   </CardContent>
-                </Card>
-              </Grid>
-            );
-          })}
-        </Grid>
-        <BackDropComponent open={open}/>
+                </Box>
+                <TableContainer component={Paper} sx={{ width: '100%' }}>
+                  {testResult.test.toLowerCase() === 'listening' ? (
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>English Level</TableCell>
+                          <TableCell>Correct Answers</TableCell>
+                          <TableCell>Incorrect Answers</TableCell>
+                          <TableCell>Total Questions</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell>{testResult.data?.englishLevel}</TableCell>
+                          <TableCell>{testResult.data?.correctAnswers}</TableCell>
+                          <TableCell>{testResult.data?.incorrectAnswers}</TableCell>
+                          <TableCell>{testResult.data?.totalQuestions}</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  ) : (
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Question</TableCell>
+                          <TableCell>Level</TableCell>
+                          <TableCell>Justification</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {testResult.data.responseDetails?.map((detail, detailIndex) => (
+                          <TableRow key={detailIndex}>
+                            <TableCell>{detailIndex + 1}</TableCell>
+                            <TableCell>{detail.level}</TableCell>
+                            <TableCell>{detail.justification}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  )}
+                </TableContainer>
+              </Card>
+            </Box>
+          );
+        })}
+        <BackDropComponent open={open} />
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
           <CustomButtonsActions variant="contained" color="primary" onClick={handleReset}>
             Back to menu
