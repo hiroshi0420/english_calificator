@@ -14,7 +14,7 @@ export const ContainerLeft = styled('div')(() => {
         display: 'flex',
         justifyContent: 'space-between',
         flexDirection: 'row',
-        width: '80%'
+        width: '30%'
     }
 })
 
@@ -47,7 +47,7 @@ export const SectionRight = styled('div')(() => {
     return {
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         marginRight: '16px'
     }
 });

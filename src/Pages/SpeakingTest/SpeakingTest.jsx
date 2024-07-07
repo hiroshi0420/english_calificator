@@ -282,9 +282,9 @@ export const SpeakingTest = () => {
 
                     <Button
                       variant='contained'
-                      color='warning'
+                      color='success'
                       endIcon={<CustomSendIcon />}
-                      sx={{ fontSize: isLgDown && '0.80rem', height: '25px', width: '150px' }}
+                      sx={{ fontSize: isLgDown && '0.80rem', height: '25px', width: '150px', color: '#ffffff' }}
                       onClick={handleSubmit}
                     >
                       Submit

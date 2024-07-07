@@ -1,5 +1,5 @@
 import { styled } from "@mui/material/styles";
-import SendIcon from '@mui/icons-material/Send';
+import PublishIcon from '@mui/icons-material/Publish';
 import { Box, Typography } from '@mui/material';
 
 
@@ -14,6 +14,7 @@ export const ContainerNavbar = styled(Box)(({ theme }) => {
 export const SectionPageTitle = styled('section')(() => {
   return {
     display: 'flex',
+    justifyContent: 'center',
     height: 'auto',
     width: '100%',
   }
@@ -24,6 +25,7 @@ export const ContainerQuestion = styled('div')(() => {
   return {
     display: 'flex',
     overflow: 'auto',
+    alignItems: 'center',
     flexDirection: 'row',
     width: '100%',
     paddingBottom: '16px',
@@ -36,12 +38,14 @@ export const ContainerContent = styled(Box)(({ theme, numberQuestion }) => {
     display: numberQuestion && 'flex',
     alignItems: numberQuestion && 'center',
     justifyContent: numberQuestion && 'center',
-    width: numberQuestion ? '10%' : '90%',
-    borderRadius: numberQuestion ? '4px 0 0 4px' : '0 4px 4px 0',
+    height: numberQuestion && '40px',
+    width: numberQuestion && '40px',
+    borderRadius: numberQuestion ? '50%' : '0 4px 4px 0',
+    background: numberQuestion && theme.palette.primary.main,
+    flexGrow: !numberQuestion  && 1,
     maxHeight: '150px',
     overflow: 'hidden',
     padding: '16px',
-    background: numberQuestion ? theme.palette.customGray.main : theme.palette.background.default,
     '&::-webkit-scrollbar': {
       width: '4px',
     },
@@ -64,12 +68,13 @@ export const ContainerText = styled(Box)(({theme}) => {
 
 export const CustomTyphography = styled(Typography)(() => {
   return {
+    color: '#ffffff',
     fontWeight: 'bold',
     fontSize: '1rem'
   }
 })
 
-export const CustomSendIcon = styled(SendIcon)(({theme}) => {
+export const CustomSendIcon = styled(PublishIcon)(({theme}) => {
   return {
     [theme.breakpoints.down('lg')]:{
       fontSize: '16px !important'
@@ -79,6 +84,7 @@ export const CustomSendIcon = styled(SendIcon)(({theme}) => {
 
 export const Container = styled('div')(() => {
   return {
+    padding: '16px',
     height: '100%',
     width: '100%',
   }

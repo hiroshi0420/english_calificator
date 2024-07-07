@@ -13,7 +13,7 @@ export const HeaderSection = ({ progress, totalMarks, formatTime, timeLeft }) =>
 
     return (
         <ContainerHeader>
-            <Box sx={{ display: 'flex', flexDirection: 'row', height: '80px' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', height: '80px' }}>
                 <ContainerLeft>
                     <SectionLeft>
                         <Typography
@@ -31,27 +31,27 @@ export const HeaderSection = ({ progress, totalMarks, formatTime, timeLeft }) =>
                             This test will be evaluated using IA
                         </Typography>
                     </SectionLeft>
-                    <SectionRight>
-                        <GroupItems>
-                            <GroupIcon />
-                            <Typography
-                                variant="body2"
-                                sx={{ fontSize: isLgDown && '0.80rem' }}
-                            >
-                                Punnoose Wilson
-                            </Typography>
-                        </GroupItems>
-                        <GroupItems>
-                            <CheckCircleOutlineIcon />
-                            <Typography
-                                variant="body2"
-                                sx={{ fontSize: isLgDown && '0.80rem' }}
-                            >
-                                Total Marks: {totalMarks}
-                            </Typography>
-                        </GroupItems>
-                    </SectionRight>
                 </ContainerLeft>
+                <SectionRight>
+                    <GroupItems>
+                        <GroupIcon />
+                        <Typography
+                            variant="body2"
+                            sx={{ fontSize: isLgDown && '0.80rem' }}
+                        >
+                            Punnoose Wilson
+                        </Typography>
+                    </GroupItems>
+                    <GroupItems>
+                        <CheckCircleOutlineIcon />
+                        <Typography
+                            variant="body2"
+                            sx={{ fontSize: isLgDown && '0.80rem' }}
+                        >
+                            Total Marks: {totalMarks}
+                        </Typography>
+                    </GroupItems>
+                </SectionRight>
                 <ContainerRight>
                     <AccessTimeFilledIcon style={{ marginRight: '8px' }} />
                     <Typography
@@ -65,7 +65,7 @@ export const HeaderSection = ({ progress, totalMarks, formatTime, timeLeft }) =>
             </Box>
             <Box>
                 <Typography variant='caption' fontWeight='bold'>Progress: {`${Math.round(progress)}%`} </Typography>
-                <LinearProgress variant="determinate" value={progress} color='success'/>
+                <LinearProgress variant="determinate" value={progress} color='success' />
             </Box>
         </ContainerHeader>
     );
