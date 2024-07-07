@@ -1,5 +1,14 @@
 import { styled } from "@mui/material/styles";
-import { DialogContent } from '@mui/material';
+import { DialogContent, DialogActions } from '@mui/material';
+
+
+export const CustomDialogActions = styled(DialogActions)(({theme}) => {
+    return {
+        display: 'flex',
+        justifyContent: 'center',
+        borderTop: `1px solid ${theme.palette.primary.main}`
+    }
+});
 
 export const CustomDialogComtent = styled(DialogContent)(({ theme }) => {
     return {

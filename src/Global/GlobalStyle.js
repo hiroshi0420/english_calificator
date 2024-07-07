@@ -1,78 +1,113 @@
-import { createTheme } from '@mui/material';
+// import { createTheme } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+
 
 const colors = Object.freeze({
-    blueDark: '#003366',
-    blueLight: '#0073e6',
-    grayLight: '#f4f4f4',
-    green: '#4CAF50',
-    red: '#f44336',
+    blueDark: '#0A4BA0',
+    blueLight: '#3389E5',
+    grayLight: '#f4F5F9',
+    // green: '#76C15D',
+    green: '#4eb734',
+    // red: '#EE3962',
+    red: '#982023',
     orange: '#ff9800',
-    grayBold: '#f0f0f0',
-    customGray: '#f0f0f0' // Agregar color personalizado aquí
+    grayBold: '#92A4C8',
+    customGray: '#f0f0f0',
+    blueSoft: '#d3dfee', // Agregar color personalizado aquí
 });
 
 export const theme = createTheme({
-    breakpoints: {
-        values: {
-            xs: 0,
-            sm: 425,
-            md: 769,
-            lg: 1440,
-            xl: 1536,
-        },
-    },
-    palette: {
-        primary: {
-            main: colors.blueDark,
-        },
-        secondary: {
-            main: colors.blueLight,
-        },
-        error: {
-            main: colors.red,
-        },
-        warning: {
-            main: colors.orange,
-        },
-        info: {
-            main: colors.blueLight,
-        },
-        success: {
-            main: colors.green,
-        },
-        background: {
-            default: colors.grayLight,
-        },
-        customGray: {
-            main: colors.customGray, // Usar color personalizado aquí
-        },
-    },
-    typography: {
-        fontFamily: [
-            'Poppins',
-            'sans-serif',
-            'Material Icons'
-        ].join(','),
-    },
-    components: {
-        MuiButton: {
-            styleOverrides: {
-                containedWarning: {
-                    color: '#FFFFFF', // Texto blanco
-                },
+  breakpoints: {
+      values: {
+          xs: 0,
+          sm: 425,
+          md: 769,
+          lg: 1440,
+          xl: 1536,
+      },
+  },
+  palette: {
+      primary: {
+          main: colors.blueDark,
+      },
+      secondary: {
+          main: colors.blueLight,
+      },
+      error: {
+          main: colors.red,
+      },
+      warning: {
+          main: colors.orange,
+      },
+      info: {
+          main: colors.blueLight,
+      },
+      success: {
+          main: colors.green,
+          second: colors.greenHard,
+      },
+      background: {
+          default: colors.grayLight,
+      },
+      customGray: {
+          main: colors.grayBold, // Usar color personalizado aquí
+      },
+      blueSoft: {
+        main: colors.blueSoft, 
+      },
+      customColors: {
+        greenHard: colors.greenHard,
+      }
+
+  },
+  typography: {
+      fontFamily: [
+          'Poppins',
+          'sans-serif',
+          'Material Icons'
+      ].join(','),
+  },
+  components: {
+      MuiButton: {
+          styleOverrides: {
+              containedWarning: {
+                  color: '#FFFFFF', // Texto blanco
+              },
+          },
+      },
+      MuiFormLabel: {
+          styleOverrides: {
+              asterisk: {
+                  color: colors.red,
+                  "&$error": {
+                      color: colors.red,
+                  },
+              },
+          },
+      },
+      MuiTab: {
+          styleOverrides: {
+              root: {
+                  height: '100%',
+                  fontSize: "0.80rem",
+                  color: colors.grayLight, // Color de la letra por defecto
+                  '&.Mui-selected': {
+                      color: colors.grayLight, // Color de la letra cuando está activo
+                  },
+              },
+          },
+      },
+      MuiTabs: {
+          styleOverrides: {
+              indicator: {
+                  backgroundColor: colors.grayLight, // Color del indicador cuando el tab está activo
+              },
+              root: {
+                height: '100%', // Ocupa el 100% de la altura del contenedor padre
             },
-        },
-        MuiFormLabel: {
-            styleOverrides: {
-                asterisk: {
-                    color: colors.red,
-                    "&$error": {
-                        color: colors.red,
-                    },
-                },
-            },
-        },
-    },
+          },
+      },
+  },
 });
 
 export const globalStyles = `
@@ -83,11 +118,11 @@ export const globalStyles = `
   }
 
   body {
-    background-color: ${colors.grayBold}; 
+    background-color: #ffffff; 
     height: 100vh;
     margin: 0 auto;
     overscroll-behavior: none;
-    width: 100%;
+    width: 100vw;
     overflow-x: hidden;
     overflow-y: auto;
   }

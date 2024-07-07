@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Checkbox, Container, Paper, Typography, Box, List, ListItem, Grid } from '@mui/material';
-import { CustomTypography, CustomFormControlLabel } from './Style'; // Asegúrate de que la ruta de importación sea correcta
+import { CustomTypography, CustomFormControlLabel, Section, ContainerBox } from './Style'; // Asegúrate de que la ruta de importación sea correcta
 
 export const Instructions = ({ examDetails, onCheckboxChange }) => {
   const [readInstructions, setReadInstructions] = useState(false);
@@ -12,8 +12,11 @@ export const Instructions = ({ examDetails, onCheckboxChange }) => {
 
   return (
     <Container maxWidth="lg">
-      <Paper elevation={3} sx={{ padding: 2, marginTop: 2, marginBottom: 2 }}>
-        <CustomTypography variant="body1" gutterBottom>
+      <Box>
+        <Typography variant='h5' textAlign='center' gutterBottom>
+          Question Test
+        </Typography>
+        <CustomTypography variant="body1" textAlign='center' gutterBottom>
           Please read the following instructions carefully
         </CustomTypography>
         <List>
@@ -54,24 +57,28 @@ export const Instructions = ({ examDetails, onCheckboxChange }) => {
           </ListItem>
         </List>
         <Box mt={2}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+          <Section>
+            <ContainerBox needLine={true}>
               <CustomTypography variant="body2"><strong>Name:</strong> {examDetails.name}</CustomTypography>
+            </ContainerBox>
+            <ContainerBox needLine={true}>
               <CustomTypography variant="body2"><strong>Type:</strong> {examDetails.type}</CustomTypography>
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            </ContainerBox>
+            <ContainerBox needLine={true}>
               <CustomTypography variant="body2"><strong>Total Questions:</strong> {examDetails.totalQuestion}</CustomTypography>
+            </ContainerBox>
+            <ContainerBox>
               <CustomTypography variant="body2"><strong>Total Duration:</strong> {examDetails.totalDuration}</CustomTypography>
-            </Grid>
-          </Grid>
+            </ContainerBox>
+          </Section>
         </Box>
-        <Box mt={2}>
+        <Box mt={2} sx={{ display: 'flex', justifyContent: 'center' }}>
           <CustomFormControlLabel
             control={<Checkbox name="readInstructions" checked={readInstructions} onChange={handleCheckboxChange} />}
             label="I have read instructions carefully"
           />
         </Box>
-      </Paper>
+      </Box>
     </Container>
   );
 };

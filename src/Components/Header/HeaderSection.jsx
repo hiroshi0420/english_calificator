@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Typography, Grid, LinearProgress, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { Box, Typography, Grid, LinearProgress, useMediaQuery } from '@mui/material';
 
 import GroupIcon from '@mui/icons-material/Group';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
@@ -59,13 +59,13 @@ export const HeaderSection = ({ progress, totalMarks, formatTime, timeLeft }) =>
                         fontWeight='bold'
                         sx={{ fontSize: isLgDown && '0.80rem' }}
                     >
-                        Remaining Time : {formatTime(timeLeft)}
+                        Remaining Time : <span style={{ color: theme.palette.success.main }}> {formatTime(timeLeft)} </span>
                     </Typography>
                 </ContainerRight>
             </Box>
             <Box>
                 <Typography variant='caption' fontWeight='bold'>Progress: {`${Math.round(progress)}%`} </Typography>
-                <LinearProgress variant="determinate" value={progress} />
+                <LinearProgress variant="determinate" value={progress} color='success'/>
             </Box>
         </ContainerHeader>
     );
