@@ -4,7 +4,7 @@ import { Box, Paper } from '@mui/material';
 
 export const ContainerContent = styled('div')(({ theme }) => {
     return {
-        padding: '16px 40px',
+        // padding: '16px 40px',
         width: '100%',
         height: '92%',
         '&::-webkit-scrollbar': {

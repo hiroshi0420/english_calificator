@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogActions, Button } from '@mui/material';
 import { Instructions } from '../../Pages/Instructions/Instructions';
 import { ComponentSnackbarAlert } from '../../Components/Snackbar/SnackbarComponent'; // Importar el componente
-import { CustomDialogComtent } from './Style';
+import { CustomDialogComtent, CustomDialogActions } from './Style';
 
 const DialogComponent = ({ showInstructions, setShowInstructions, handleCloseInstructions, examDetails }) => {
   const [isChecked, setIsChecked] = useState(false);
@@ -31,18 +31,18 @@ const DialogComponent = ({ showInstructions, setShowInstructions, handleCloseIns
   return (
     <>
       <Dialog open={showInstructions} onClose={() => setShowInstructions(false)} maxWidth={'lg'}>
-        <DialogTitle>Questions Test</DialogTitle>
+        {/* <DialogTitle>Questions Test</DialogTitle> */}
         <CustomDialogComtent>
           <Instructions
             examDetails={examDetails}
             onCheckboxChange={handleCheckboxChange}
           />
         </CustomDialogComtent>
-        <DialogActions>
-          <Button onClick={handleProceed} color="primary">
+        <CustomDialogActions>
+          <Button onClick={handleProceed} variant='contained' color="primary">
             Proceed
           </Button>
-        </DialogActions>
+        </CustomDialogActions>
       </Dialog>
       <ComponentSnackbarAlert
         snackbarConfig={snackbarConfig}

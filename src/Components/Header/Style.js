@@ -26,7 +26,7 @@ export const ContainerRight = styled('div')(({theme}) => {
         alignItems: 'center',
         width: '20%',
         borderRadius: '0 4px 4px 0',
-        background: theme.palette.customGray.main,
+        background: theme.palette.blueSoft.main,
         [theme.breakpoints.down('lg')]: {
             '& .MuiSvgIcon-root': {
                 fontSize: '1rem',

@@ -10,19 +10,25 @@ export const ContainerNavbar = styled('div')(({ theme }) => {
   }
 })
 
-export const CustomToolbar = styled(Toolbar)(({theme}) => {
+export const CustomToolbar = styled('div')(({theme}) => {
   return {
     height: '100%',
-    [theme.breakpoints.down('lg')]: {
-        minHeight: 'unset', 
-        // Search Bar
-        '& .MuiInputBase-input': {
-          height: '0.80rem',
-        },
-        '& .MuiTypography-root': {
-          fontSize: '1rem',
-        }
-    },
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    paddingLeft: '1rem',
+    paddingRight: '1rem',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+    // [theme.breakpoints.down('lg')]: {
+    //     minHeight: 'unset', 
+    //     // Search Bar
+    //     '& .MuiInputBase-input': {
+    //       height: '0.80rem',
+    //     },
+    //     '& .MuiTypography-root': {
+    //       fontSize: '1rem',
+    //     }
+    // },
   } 
 })
 
@@ -72,5 +78,20 @@ export const StyledInputBase = styled(InputBase)(({ theme }) => {
         },
       },
     },
+  }
+})
+
+export const ImgCompany = styled('img')(() => {
+  return {
+    width: '100px',
+    height: '42px',
+  }
+})
+
+export const ContainerImg = styled('div')(() => {
+  return {
+    backgroundColor: '#ffffff',
+    width: '100px',
+    height: '100%',
   }
 })
