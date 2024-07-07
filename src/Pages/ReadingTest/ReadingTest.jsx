@@ -183,7 +183,7 @@ export const ReadingTest = () => {
         progress={progress}
         totalMarks={`${currentQuestionIndex + 1}/${data?.questions.length}`}
       />
-      <Paper elevation={0} sx={{ padding: '0 24px 24px' }}>
+      <Paper elevation={0} sx={{ padding: '0 24px 0 24px' }}>
         <Box>
           <Box>
             <ContainerText>

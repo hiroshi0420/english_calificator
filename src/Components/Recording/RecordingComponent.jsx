@@ -6,7 +6,9 @@ import { CustomButtonsActions } from '../../Pages/Style';
 // Animations motions
 import { motion } from 'framer-motion';
 
+// Icons
 import KeyboardVoiceIcon from '@mui/icons-material/KeyboardVoice';
+import StopCircleIcon from '@mui/icons-material/StopCircle';
 
 
 export const RecordingComponent = ({ handleStartRecording, handleStopRecording, isRecording, audioURL }) => {
@@ -72,18 +74,20 @@ export const RecordingComponent = ({ handleStartRecording, handleStopRecording, 
             )}
             <Box display="flex" justifyContent="center" gap={2} mt={2}>
                 <CustomButtonsActions
-                    variant="outlined"
-                    color="secondary"
+                    variant="contained"
+                    sx={{ backgroundColor: '#ff000099'}}
                     onClick={handleStopRecording}
                     disabled={!isRecording}
+                    startIcon={<StopCircleIcon />}
                 >
                     Stop Recording
                 </CustomButtonsActions>
                 <CustomButtonsActions
                     variant="contained"
-                    color="primary"
+                    color="success"
                     onClick={handleStartRecording}
                     disabled={isRecording}
+                    startIcon={<KeyboardVoiceIcon />}
                 >
                     Start Recording
                 </CustomButtonsActions>

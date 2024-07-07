@@ -1,10 +1,11 @@
 import { styled } from "@mui/material/styles";
-import SendIcon from '@mui/icons-material/Send';
+import PublishIcon from '@mui/icons-material/Publish';
 import { Box, Typography } from '@mui/material';
 
 
 export const Container = styled('div')(() => {
   return {
+    padding: '16px',
     height: '100%',
     width: '100%',
   }
@@ -13,6 +14,7 @@ export const Container = styled('div')(() => {
 export const SectionPageTitle = styled('section')(() => {
   return {
     display: 'flex',
+    justifyContent: 'center',
     height: '10%',
     width: '100%',
   }
@@ -22,8 +24,8 @@ export const ContainerQuestion = styled('div')(() => {
   return {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
     width: '100%',
-    paddingBottom: '16px',
     borderRadius: '20px',
   }
 })
@@ -33,12 +35,14 @@ export const ContainerContent = styled(Box)(({ theme, numberQuestion }) => {
     display: numberQuestion && 'flex',
     alignItems: numberQuestion && 'center',
     justifyContent: numberQuestion && 'center',
-    width: numberQuestion ? '10%' : '90%',
-    borderRadius: numberQuestion ? '4px 0 0 4px' : '0 4px 4px 0',
+    height: numberQuestion && '40px',
+    width: numberQuestion && '40px',
+    borderRadius: numberQuestion ? '50%' : '0 4px 4px 0',
+    background: numberQuestion && theme.palette.primary.main,
+    flexGrow: !numberQuestion  && 1,
     maxHeight: '150px',
-    overflow: 'auto',
+    overflow: 'hidden',
     padding: '16px',
-    background: numberQuestion ? theme.palette.customGray.main : theme.palette.background.default,
     '&::-webkit-scrollbar': {
       width: '4px',
     },
@@ -50,13 +54,13 @@ export const ContainerContent = styled(Box)(({ theme, numberQuestion }) => {
 
 export const CustomTyphography = styled(Typography)(({theme}) => {
   return {
-    color: theme.palette.primary.main,
+    color: '#ffffff',
     fontWeight: 'bold',
-    fontSize: '2rem'
+    fontSize: '1rem'
   }
 })
 
-export const CustomSendIcon = styled(SendIcon)(({theme}) => {
+export const CustomSendIcon = styled(PublishIcon)(({theme}) => {
   return {
     [theme.breakpoints.down('lg')]:{
       fontSize: '16px !important'

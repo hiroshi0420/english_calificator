@@ -10,6 +10,7 @@ import { PageTitle } from '../../Components/PageTitle/PageTitle';
 import { HeaderSection } from '../../Components/Header/HeaderSection';
 // Styles
 import { SectionPageTitle, ContainerQuestion, ContainerContent, CustomTyphography, Container, CustomSendIcon, ContainerOptions } from './Style';
+import { TypograhpyQuestion } from '../Style';
 // API
 import { QuestionApi } from '../../Services/QuestionsApi';
 
@@ -150,12 +151,19 @@ export const ListeningTest = () => {
       <Paper elevation={0} sx={{ padding: '0 24px 24px' }}>
         <Box>
           <Box>
-            <audio controls src={`data:audio/mp3;base64,${audioBase64}`} style={{ height: '30px'}}/>
+            <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+              <audio controls src={`data:audio/mp3;base64,${audioBase64}`} style={{ height: '30px'}}/>
+            </Box>
             <ContainerQuestion>
-              <ContainerContent>
-                <CustomTyphography variant="body1" align="left">
-                  {String(currentQuestionIndex + 1).padStart(2, '0')}. {data?.[0]?.questionSet?.[currentQuestionIndex]?.question}
+              <ContainerContent numberQuestion={true}>
+                <CustomTyphography changeColor={true}>
+                  {String(currentQuestionIndex + 1).padStart(2, '0')}.
                 </CustomTyphography>
+              </ContainerContent>
+              <ContainerContent>
+                <TypograhpyQuestion variant="body1" align="left">
+                  {data?.[0]?.questionSet?.[currentQuestionIndex]?.question}
+                </TypograhpyQuestion>
               </ContainerContent>
             </ContainerQuestion>
 
@@ -186,9 +194,9 @@ export const ListeningTest = () => {
                 {currentQuestionIndex === data?.[0]?.questionSet?.length - 1 ? (
                   <Button
                     variant='contained'
-                    color='warning'
+                    color='success'
                     endIcon={<CustomSendIcon />}
-                    sx={{ fontSize: isLgDown && '0.80rem', height: '25px', width: '150px' }}
+                    sx={{ fontSize: isLgDown && '0.80rem', height: '25px', width: '150px', color: '#ffffff' }}
                     onClick={handleSubmit}
                   >
                     Submit
