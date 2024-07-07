@@ -5,6 +5,7 @@ import { Box, Typography } from '@mui/material';
 
 export const Container = styled('div')(() => {
   return {
+    padding: '16px',
     height: '100%',
     width: '100%',
   }
@@ -13,6 +14,7 @@ export const Container = styled('div')(() => {
 export const SectionPageTitle = styled('section')(() => {
   return {
     display: 'flex',
+    justifyContent: 'center',
     height: '10%',
     width: '100%',
   }
