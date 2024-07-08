@@ -139,7 +139,7 @@ const Navbar = () => {
             role="navigation"
           >
             <LinkTab label="Home" href="/drafts" />
-            <LinkTab label="My resutls" href="/trash" />
+            <LinkTab label="My results" href="/trash" />
           </Tabs>
 
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
