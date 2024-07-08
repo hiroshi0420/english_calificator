@@ -57,13 +57,13 @@ export const Menu = () => {
       <Container>
         <ContainerLeft>
           <TitleHome variant='h3' align='left' fontWeight='bold' needMargin={true}>
-            Assess Your English Skills Today: <br />
-            Precise, Quick, and Comprehensive <br />
-            Evaluations.
+            Unlock Your Potential: <br />
+            Fast, Accurate English Proficiency <br />
+            Testing.
           </TitleHome>
 
           <Typography variant='caption' align='left'>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+            Start Your Comprehensive Evaluation Today and Elevate Your Career Prospects, discover Your English Proficiency Level and Prepare to Conquer New Global Challenges
           </Typography>
 
         </ContainerLeft>
