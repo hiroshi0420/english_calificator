@@ -205,10 +205,14 @@ export const SpeakingTest = () => {
         const audioUrl = URL.createObjectURL(audioBlob);
         setAudioURL(audioUrl);
         setIsRecording(false);
+        console.log('Audio Blob:',audioBlob)
+        console.log('Audio Url:',audioBlob)
+        
 
         // Convert Blob to Base64
         const base64Audio = await blobToBase64(audioBlob);
-        setCurrentQuestion({ ...currentQuestion, response: base64Audio });
+        const cleanBase64Audio = base64Audio.replace(/^data:audio\/wav;base64,/, '');
+        setCurrentQuestion({ ...currentQuestion, response: cleanBase64Audio });
       };
 
 
