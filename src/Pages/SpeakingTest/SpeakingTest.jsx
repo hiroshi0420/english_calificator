@@ -31,7 +31,7 @@ export const SpeakingTest = () => {
   const [responses, setResponses] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState({
     question: '',
-    response: '',
+    audioBase64: '',
   });
   const [allResponses, setAllResponses] = useState([]);
   const [timeLeft, setTimeLeft] = useState(10 * 60);
@@ -50,11 +50,11 @@ export const SpeakingTest = () => {
         let resp = response.data;
         setData(resp);
         // Inicializar el estado de respuestas
-        setResponses(resp.questions.map(() => ({ response: '' })));
+        setResponses(resp.questions.map(() => ({ audioBase64: '' })));
         // Establecer la primera pregunta en el estado actual
-        setCurrentQuestion({ question: resp.questions[0].question, response: '' });
+        setCurrentQuestion({ question: resp.questions[0].question, audioBase64: '' });
         // Inicializar el estado de todas las respuestas
-        setAllResponses(resp.questions.map((q) => ({ question: q.question, response: '' })));
+        setAllResponses(resp.questions.map((q) => ({ question: q.question, audioBase64: '' })));
       } else {
         console.error('Error al cargar preguntas:', response.statusText);
       }
@@ -63,10 +63,9 @@ export const SpeakingTest = () => {
     }
   };
 
-  console.log('allResponses', allResponses)
   const sendAnswer = async () => {
     try {
-
+      console.log('Sending responses:', allResponses)
       let response = await questionApi.sendSpeakingTest(allResponses);
       if (response.status === 200) {
         let resp = response.data;
@@ -84,12 +83,12 @@ export const SpeakingTest = () => {
     if (currentQuestionIndex < data?.questions.length - 1) {
       // Guardar la respuesta actual en el estado de respuestas
       const updatedResponses = [...responses];
-      updatedResponses[currentQuestionIndex] = { response: currentQuestion.response };
+      updatedResponses[currentQuestionIndex] = { audioBase64: currentQuestion.audioBase64 };
       setResponses(updatedResponses);
 
       // Actualizar el estado de todas las respuestas
       const updatedAllResponses = [...allResponses];
-      updatedAllResponses[currentQuestionIndex].response = currentQuestion.response;
+      updatedAllResponses[currentQuestionIndex].audioBase64 = currentQuestion.audioBase64;
       setAllResponses(updatedAllResponses);
 
       // Cambiar a la siguiente pregunta
@@ -97,7 +96,7 @@ export const SpeakingTest = () => {
       setCurrentQuestionIndex(nextIndex);
       setCurrentQuestion({
         question: data.questions[nextIndex].question,
-        response: updatedResponses[nextIndex].response,
+        audioBase64: updatedResponses[nextIndex].audioBase64,
       });
     }
   };
@@ -106,12 +105,12 @@ export const SpeakingTest = () => {
     if (currentQuestionIndex > 0) {
       // Guardar la respuesta actual en el estado de respuestas
       const updatedResponses = [...responses];
-      updatedResponses[currentQuestionIndex] = { response: currentQuestion.response };
+      updatedResponses[currentQuestionIndex] = { audioBase64: currentQuestion.response };
       setResponses(updatedResponses);
 
       // Actualizar el estado de todas las respuestas
       const updatedAllResponses = [...allResponses];
-      updatedAllResponses[currentQuestionIndex].response = currentQuestion.response;
+      updatedAllResponses[currentQuestionIndex].audioBase64 = currentQuestion.audioBase64;
       setAllResponses(updatedAllResponses);
 
       // Cambiar a la pregunta anterior
@@ -119,7 +118,7 @@ export const SpeakingTest = () => {
       setCurrentQuestionIndex(prevIndex);
       setCurrentQuestion({
         question: data.questions[prevIndex].question,
-        response: updatedResponses[prevIndex].response,
+        audioBase64: updatedResponses[prevIndex].audioBase64,
       });
     }
   };
@@ -146,9 +145,9 @@ export const SpeakingTest = () => {
     setOpen(true);
     // Guardar la respuesta actual en el estado de respuestas
     const updatedAllResponses = [...allResponses];
-    updatedAllResponses[currentQuestionIndex].response = currentQuestion.response;
+    updatedAllResponses[currentQuestionIndex].audioBase64 = currentQuestion.audioBase64;
     setAllResponses(updatedAllResponses);
-
+    console.log('All response at submit:', updatedAllResponses)
     sendAnswer();
     const allTestsCompleted = {
       ...completedTests,
@@ -205,14 +204,15 @@ export const SpeakingTest = () => {
         const audioUrl = URL.createObjectURL(audioBlob);
         setAudioURL(audioUrl);
         setIsRecording(false);
-        console.log('Audio Blob:',audioBlob)
-        console.log('Audio Url:',audioBlob)
+        console.log('Audio Blob:',audioBlob);
+        console.log('Audio Url:',audioBlob);
         
 
         // Convert Blob to Base64
         const base64Audio = await blobToBase64(audioBlob);
         const cleanBase64Audio = base64Audio.replace(/^data:audio\/wav;base64,/, '');
-        setCurrentQuestion({ ...currentQuestion, response: cleanBase64Audio });
+        console.log('Base64 Audio:',cleanBase64Audio);
+        setCurrentQuestion({ ...currentQuestion, audioBase64: cleanBase64Audio });
       };
 
 
