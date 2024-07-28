@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  english-calificator:
+    build:
+      context: .
+      dockerfile: ./Docker/prod/Dockerfile
+    image: english-calificator
+    container_name: english-calificator-dev
+    restart: always
+    ports:
+      - "80:80"
+    env_file:
+      - .env
