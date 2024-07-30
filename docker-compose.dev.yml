@@ -13,4 +13,13 @@ services:
     env_file:
       - .env
     labels:
+      - "traefik.enable=true"
       - "traefik.http.routers.english-calificator.rule=Host(`omegahealtycare.datarobotix.com`)"
+      - "traefik.http.routers.english-calificator.entrypoints=websecure"
+      - "traefik.http.routers.english-calificator.tls.certresolver=myresolver"
+    networks:
+      - traefik_network   
+
+networks:
+  traefik_network:
+    external: true
