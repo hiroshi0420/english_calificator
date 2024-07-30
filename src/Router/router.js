@@ -11,12 +11,14 @@ const Router = {
     appResults: '/results',
     
     // API
-    apiBaseUrl: 'http://localhost:5000',
+    apiBaseUrl:  import.meta.env.VITE_API_URL,
     apiWritingTest: '/api/Writing',
     apiReadingTest: '/api/Reading',
     apiListeningTest: '/api/Listening',
     apiSpeakingTest: '/api/Speaking',
     apiResultsTest: '/api/FinalResult',
+
+    apiLogin: '/api/Auth',
 
 }
 
