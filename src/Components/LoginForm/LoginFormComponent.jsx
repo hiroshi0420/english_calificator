@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useTheme } from '@mui/material/styles';
+import axios from 'axios';
 
 import LogoCompany from '../../../public/logoCompanyNav.png';
 
@@ -14,12 +15,29 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 
+import { SecurityApi } from '../../Services/SecurityApi';
+
 // Styles
 import { Container, Form, Header, ImgLogo, CustomTypography, CustomOutlinedInput } from './Style';
+
+
+// axios.interceptors.request.use(
+//     (config) => {
+//         const token = localStorage.getItem('access_token');
+//         if (token) {
+//             config.headers['Authorization'] = `Bearer ${token}`;
+//         }
+//         return config;
+//     },
+//     (error) => {
+//         return Promise.reject(error);
+//     }
+// );
 
 export const LoginFormComponent = () => {
 
     const theme = useTheme();
+    const apiLogin = new SecurityApi();
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -34,21 +52,30 @@ export const LoginFormComponent = () => {
         event.preventDefault();
     };
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         if (email === '' || password === '') {
             setError('Both fields are required.');
-        } else if (email !== 'englishapp@gmail.com' || password !== '123456789') {
-            setError('Invalid email or password.');
-        } else {
-            setError('');
-            setOpen(true); // Mostrar el Backdrop
-            setTimeout(() => {
-                setOpen(false); // Ocultar el Backdrop
-                navigate('/menu'); // Redirigir al menú
-            }, 2000); // Simular una espera de 2 segundos antes de redirigir
+            return;
+        }
+    
+        try {
+            setOpen(true);
+            const response = await apiLogin.login({ email, password });
+    
+            if (response.status === 200) {
+                const token = response.data.access_token;
+                localStorage.setItem('token', token);
+                setError('');
+                navigate('/menu');
+            } else {
+                setError('Invalid email or password.');
+            }
+        } catch (error) {
+            setError('Login failed. Please try again.');
+        } finally {
+            setOpen(false); 
         }
     };
-
 
     return (
         <>
