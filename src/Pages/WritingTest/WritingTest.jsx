@@ -43,6 +43,7 @@ export const WritingTest = () => {
       let response = await questionApi.getWritingTest(3);
       if (response.status === 200) {
         let resp = response.data;
+        console.log('respuestas', resp)
         setData(resp);
         // Inicializar el estado de respuestas
         setResponses(resp.questions.map(() => ({ response: '' })));
