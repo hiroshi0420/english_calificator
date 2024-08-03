@@ -70,7 +70,7 @@ export const SpeakingTest = () => {
       if (response.status === 200) {
         let resp = response.data;
         setRespTest((prevState) => [...prevState, { test: 'speaking', data: resp }]);
-        console.log('Respuestas enviadas:', resp);
+        console.log('Speaking:', resp);
       } else {
         console.error('Error al enviar respuestas:', response.statusText);
       }

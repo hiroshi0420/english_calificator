@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Typography } from '@mui/material';
 
 import ImgHome from '../../../public/Home.png';
@@ -13,12 +13,15 @@ import { TestContext } from '../../Context/TestProvider';
 import { BackDropComponent } from '../../Components/BackDrop/BackDropComponet';
 import Divider from '@mui/material/Divider';
 
+import { TestApi } from '../../Services/TestApi';
+
 
 import { Section, Container, ContainerLeft, ContainerRight, ImgSection, TitleHome, SectionCategories, ContainerCards } from './Style';
 
 export const Menu = () => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const testApi = new TestApi();
   const [showInstructions, setShowInstructions] = useState(false);
   const [nextPath, setNextPath] = useState('');
   const [open, setOpen] = useState(false); // Estado para el Backdrop
@@ -29,6 +32,18 @@ export const Menu = () => {
     totalDuration: '10 minutes'
   });
   const { completedTests } = useContext(TestContext);
+
+  useEffect(() => {
+    getTestUserId();
+  }, [])
+
+  const getTestUserId = async() => {
+    const userId = await JSON.parse(localStorage.getItem('profile'))
+    const response = await testApi.getTestById(userId.userId);
+    if(response.status === 200) {
+      localStorage.setItem('test', JSON.stringify(response.data));
+    }
+  }
 
   const handleNavigation = (path, name, type) => {
     setNextPath(path);

@@ -12,8 +12,8 @@ export const CustomTextField = ({currentQuestion, handleChange}) => {
                 variant="outlined"
                 rows={isLgUp ? 10 : 5}
                 multiline={true}
-                value={currentQuestion.response}
-                onChange={(e) => handleChange(e.target.value, 'response')}
+                value={currentQuestion.userAnswer}
+                onChange={(e) => handleChange(e.target.value, 'userAnswer')}
                 placeholder="Write your response here..."
             />
         </Container>
