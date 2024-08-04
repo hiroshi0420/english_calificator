@@ -34,11 +34,12 @@ export const ReadingTest = () => {
   const [responses, setResponses] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState({
     question: '',
-    response: '',
+    userAnswer: '',
   });
   const [allResponses, setAllResponses] = useState([]);
   const [timeLeft, setTimeLeft] = useState(10 * 60);
   const progress = ((currentQuestionIndex + 1) / (data?.questions.length || 1)) * 100;
+  const idTest = JSON.parse(localStorage.getItem('test'));
 
   console.log('data', data)
   const loadQuestions = async () => {
@@ -48,13 +49,16 @@ export const ReadingTest = () => {
         let resp = response.data;
         setData(resp);
         // Inicializar el estado de respuestas
-        setResponses(resp.questions.map(() => ({ response: '' })));
+        setResponses(resp.questions.map(() => ({ userAnswer: '' })));
         // Establecer la primera pregunta en el estado actual
-        setCurrentQuestion({ question: resp.questions[0].question, response: '' });
+        setCurrentQuestion({ question: resp.questions[0].question, userAnswer: '' });
         // Inicializar el estado de todas las respuestas
-        setAllResponses(resp.questions.map((q) => ({ id: q.id, question: q.question, response: '' })));
-      } else {
-        console.error('Error al cargar preguntas:', response.statusText);
+        setAllResponses(resp.questions.map((q) => ({
+          testId: idTest[0]?.id,
+          readingQuestionId: q.id,
+          userAnswer: '',
+          createdAt: new Date(),
+        })));
       }
     } catch (error) {
       console.error('Error en la solicitud:', error);
@@ -63,9 +67,9 @@ export const ReadingTest = () => {
 
   // console.log('data', data)
 
+  console.log('allResponses', allResponses)
   const sendAnswer = async () => {
     try {
-      console.log('allResponses', allResponses)
 
       let response = await questionApi.sendReadingTest(allResponses);
       if (response.status === 200) {
@@ -84,12 +88,12 @@ export const ReadingTest = () => {
     if (currentQuestionIndex < data?.questions.length - 1) {
       // Guardar la respuesta actual en el estado de respuestas
       const updatedResponses = [...responses];
-      updatedResponses[currentQuestionIndex] = { response: currentQuestion.response };
+      updatedResponses[currentQuestionIndex] = { userAnswer: currentQuestion.userAnswer };
       setResponses(updatedResponses);
 
       // Actualizar el estado de todas las respuestas
       const updatedAllResponses = [...allResponses];
-      updatedAllResponses[currentQuestionIndex].response = currentQuestion.response;
+      updatedAllResponses[currentQuestionIndex].userAnswer = currentQuestion.userAnswer;
       setAllResponses(updatedAllResponses);
 
       // Cambiar a la siguiente pregunta
@@ -97,7 +101,7 @@ export const ReadingTest = () => {
       setCurrentQuestionIndex(nextIndex);
       setCurrentQuestion({
         question: data.questions[nextIndex].question,
-        response: updatedResponses[nextIndex].response,
+        userAnswer: updatedResponses[nextIndex].userAnswer,
       });
     }
   };
@@ -106,12 +110,12 @@ export const ReadingTest = () => {
     if (currentQuestionIndex > 0) {
       // Guardar la respuesta actual en el estado de respuestas
       const updatedResponses = [...responses];
-      updatedResponses[currentQuestionIndex] = { response: currentQuestion.response };
+      updatedResponses[currentQuestionIndex] = { userAnswer: currentQuestion.userAnswer };
       setResponses(updatedResponses);
 
       // Actualizar el estado de todas las respuestas
       const updatedAllResponses = [...allResponses];
-      updatedAllResponses[currentQuestionIndex].response = currentQuestion.response;
+      updatedAllResponses[currentQuestionIndex].userAnswer = currentQuestion.userAnswer;
       setAllResponses(updatedAllResponses);
 
       // Cambiar a la pregunta anterior
@@ -119,7 +123,7 @@ export const ReadingTest = () => {
       setCurrentQuestionIndex(prevIndex);
       setCurrentQuestion({
         question: data.questions[prevIndex].question,
-        response: updatedResponses[prevIndex].response,
+        userAnswer: updatedResponses[prevIndex].userAnswer,
       });
     }
   };
@@ -146,7 +150,7 @@ export const ReadingTest = () => {
     setOpen(true);
     // Guardar la respuesta actual en el estado de respuestas
     const updatedAllResponses = [...allResponses];
-    updatedAllResponses[currentQuestionIndex].response = currentQuestion.response;
+    updatedAllResponses[currentQuestionIndex].userAnswer = currentQuestion.userAnswer;
     setAllResponses(updatedAllResponses);
 
     sendAnswer();

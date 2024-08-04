@@ -47,6 +47,7 @@ export const WritingTest = () => {
       if (response.status === 200) {
         let resp = response.data;
         setData(resp);
+        console.log('respuestas Reading', resp);
         // Inicializar el estado de respuestas
         setResponses(resp.questions.map(() => ({ userAnswer: '' })));
         // Establecer la primera pregunta en el estado actual

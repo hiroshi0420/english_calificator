@@ -31,7 +31,7 @@ export const Menu = () => {
     totalQuestion: 3,
     totalDuration: '10 minutes'
   });
-  const { completedTests } = useContext(TestContext);
+  const { completedTests, enabledTests, setEnabledTest } = useContext(TestContext);
 
   useEffect(() => {
     getTestUserId();
@@ -42,6 +42,9 @@ export const Menu = () => {
     const response = await testApi.getTestById(userId.userId);
     if(response.status === 200) {
       localStorage.setItem('test', JSON.stringify(response.data));
+      setEnabledTest(true);
+    }else {
+      setEnabledTest(false);
     }
   }
 
@@ -94,6 +97,7 @@ export const Menu = () => {
               components={components}
               completedTests={completedTests}
               handleNavigation={handleNavigation}
+              enabledTests={enabledTests}
             />
           </ContainerCards>
         </SectionCategories>
