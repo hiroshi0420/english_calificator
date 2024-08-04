@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Typography } from '@mui/material';
 
 import ImgHome from '../../../public/Home.png';
@@ -13,12 +13,15 @@ import { TestContext } from '../../Context/TestProvider';
 import { BackDropComponent } from '../../Components/BackDrop/BackDropComponet';
 import Divider from '@mui/material/Divider';
 
+import { TestApi } from '../../Services/TestApi';
+
 
 import { Section, Container, ContainerLeft, ContainerRight, ImgSection, TitleHome, SectionCategories, ContainerCards } from './Style';
 
 export const Menu = () => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const testApi = new TestApi();
   const [showInstructions, setShowInstructions] = useState(false);
   const [nextPath, setNextPath] = useState('');
   const [open, setOpen] = useState(false); // Estado para el Backdrop
@@ -28,7 +31,23 @@ export const Menu = () => {
     totalQuestion: 3,
     totalDuration: '10 minutes'
   });
-  const { completedTests } = useContext(TestContext);
+  const { completedTests, enabledTests, setEnabledTest } = useContext(TestContext);
+  const user = JSON.parse(localStorage.getItem('profile'))
+  console.log('usuario', user);
+
+  useEffect(() => {
+    getTestUserId();
+  }, [user])
+
+  const getTestUserId = async() => {
+    const response = await testApi.getTestById(user.userId);
+    if(response.status === 200) {
+      await localStorage.setItem('test', JSON.stringify(response));
+      setEnabledTest(false);
+    }else if(response.status === 404) {
+      setEnabledTest(true);
+    }
+  }
 
   const handleNavigation = (path, name, type) => {
     setNextPath(path);
@@ -46,10 +65,10 @@ export const Menu = () => {
   };
 
   const components = [
-    { id: 1, type: 'reading', name: 'Reading', name2: 'Reading Test', router: Router.appReadingTest },
-    { id: 2, type: 'listening', name: 'Listening', name2: 'Listening Test', router: Router.applisteningTest },
-    { id: 3, type: 'speaking', name: 'Speaking', name2: 'Speaking Test', router: Router.appSpeakingTest },
-    { id: 4, type: 'writing', name: 'Writing', name2: 'Writing Test', router: Router.appWritingTest },
+    { id: 1, type: 'reading', name: 'Reading', name2: 'Reading Test', router: Router.appReadingTest, disabled: enabledTests},
+    { id: 2, type: 'listening', name: 'Listening', name2: 'Listening Test', router: Router.applisteningTest, disabled: enabledTests },
+    { id: 3, type: 'speaking', name: 'Speaking', name2: 'Speaking Test', router: Router.appSpeakingTest, disabled: enabledTests },
+    { id: 4, type: 'writing', name: 'Writing', name2: 'Writing Test', router: Router.appWritingTest, disabled: enabledTests },
   ];
 
   return (
@@ -79,6 +98,7 @@ export const Menu = () => {
               components={components}
               completedTests={completedTests}
               handleNavigation={handleNavigation}
+              enabledTests={enabledTests}
             />
           </ContainerCards>
         </SectionCategories>

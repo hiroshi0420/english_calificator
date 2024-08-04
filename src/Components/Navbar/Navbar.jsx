@@ -82,6 +82,9 @@ const Navbar = () => {
 
   const handleLogout = () => {
     handleMenuClose();
+    localStorage.removeItem('profile');
+    localStorage.removeItem('test');
+    localStorage.removeItem('token');
     // Lógica de cierre de sesión aquí
     navigate('/login');
   };

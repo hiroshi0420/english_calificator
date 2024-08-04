@@ -15,13 +15,15 @@ import { TypograhpyQuestion } from '../Style';
 
 // API
 import { QuestionApi } from '../../Services/QuestionsApi';
+import { TestApi } from '../../Services/TestApi';
 
 import { TestContext } from '../../Context/TestProvider';
 import { BackDropComponent } from '../../Components/BackDrop/BackDropComponet';
 
 export const WritingTest = () => {
   const questionApi = new QuestionApi();
-  const { completedTests, setCompletedTests, setRespTest } = useContext(TestContext);
+  const testApi = new TestApi();
+  const { completedTests, setCompletedTests } = useContext(TestContext);
   const navigate = useNavigate();
 
   const theme = useTheme();
@@ -32,26 +34,29 @@ export const WritingTest = () => {
   const [open, setOpen] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState({
     question: '',
-    response: '',
+    userAnswer: '',
   });
   const [allResponses, setAllResponses] = useState([]);
   const [timeLeft, setTimeLeft] = useState(10 * 60);
   const progress = ((currentQuestionIndex + 1) / (data?.questions.length || 1)) * 100;
+  const idTest = JSON.parse(localStorage.getItem('test'));
 
   const loadQuestions = async () => {
     try {
-      let response = await questionApi.getWritingTest(3);
+      let response = await questionApi.getWritingTest(4);
       if (response.status === 200) {
         let resp = response.data;
         setData(resp);
         // Inicializar el estado de respuestas
-        setResponses(resp.questions.map(() => ({ response: '' })));
+        setResponses(resp.questions.map(() => ({ userAnswer: '' })));
         // Establecer la primera pregunta en el estado actual
-        setCurrentQuestion({ question: resp.questions[0].question, response: '' });
+        setCurrentQuestion({ question: resp.questions[0].question, userAnswer: '' });
         // Inicializar el estado de todas las respuestas
-        setAllResponses(resp.questions.map((q) => ({ id: q.id, question: q.question, response: '' })));
-      } else {
-        console.error('Error al cargar preguntas:', response.statusText);
+        setAllResponses(resp.questions.map((q) => ({
+          testId: idTest[0]?.id,
+          writingQuestionId: q.id,
+          userAnswer: '',
+        })));
       }
     } catch (error) {
       console.error('Error en la solicitud:', error);
@@ -60,31 +65,26 @@ export const WritingTest = () => {
 
   const sendAnswer = async () => {
     try {
-      console.log('allResponses', allResponses)
-
       let response = await questionApi.sendWritingTest(allResponses);
       if (response.status === 200) {
         let resp = response.data;
-        setRespTest((prevState) => [...prevState, { test: 'writing', data: resp }]);
-        console.log('Respuestas enviadas:', resp);
-      } else {
-        console.error('Error al enviar respuestas:', response.statusText);
       }
     } catch (error) {
       console.error('Error en la solicitud:', error.response ? error.response.data : error.message);
     }
   };
 
+
   const handleNext = () => {
     if (currentQuestionIndex < data?.questions.length - 1) {
       // Guardar la respuesta actual en el estado de respuestas
       const updatedResponses = [...responses];
-      updatedResponses[currentQuestionIndex] = { response: currentQuestion.response };
+      updatedResponses[currentQuestionIndex] = { userAnswer: currentQuestion?.userAnswer };
       setResponses(updatedResponses);
 
       // Actualizar el estado de todas las respuestas
       const updatedAllResponses = [...allResponses];
-      updatedAllResponses[currentQuestionIndex].response = currentQuestion.response;
+      updatedAllResponses[currentQuestionIndex].userAnswer = currentQuestion?.userAnswer;
       setAllResponses(updatedAllResponses);
 
       // Cambiar a la siguiente pregunta
@@ -92,7 +92,7 @@ export const WritingTest = () => {
       setCurrentQuestionIndex(nextIndex);
       setCurrentQuestion({
         question: data.questions[nextIndex].question,
-        response: updatedResponses[nextIndex].response,
+        userAnswer: updatedResponses[nextIndex].userAnswer || '',
       });
     }
   };
@@ -101,12 +101,12 @@ export const WritingTest = () => {
     if (currentQuestionIndex > 0) {
       // Guardar la respuesta actual en el estado de respuestas
       const updatedResponses = [...responses];
-      updatedResponses[currentQuestionIndex] = { response: currentQuestion.response };
+      updatedResponses[currentQuestionIndex] = { userAnswer: currentQuestion?.userAnswer };
       setResponses(updatedResponses);
 
       // Actualizar el estado de todas las respuestas
       const updatedAllResponses = [...allResponses];
-      updatedAllResponses[currentQuestionIndex].response = currentQuestion.response;
+      updatedAllResponses[currentQuestionIndex].userAnswer = currentQuestion?.userAnswer;
       setAllResponses(updatedAllResponses);
 
       // Cambiar a la pregunta anterior
@@ -114,7 +114,7 @@ export const WritingTest = () => {
       setCurrentQuestionIndex(prevIndex);
       setCurrentQuestion({
         question: data.questions[prevIndex].question,
-        response: updatedResponses[prevIndex].response,
+        userAnswer: updatedResponses[prevIndex].userAnswer || '',
       });
     }
   };
@@ -141,7 +141,7 @@ export const WritingTest = () => {
     setOpen(true);
     // Guardar la respuesta actual en el estado de respuestas
     const updatedAllResponses = [...allResponses];
-    updatedAllResponses[currentQuestionIndex].response = currentQuestion.response;
+    updatedAllResponses[currentQuestionIndex].userAnswer = currentQuestion.userAnswer;
     setAllResponses(updatedAllResponses);
 
     sendAnswer();
@@ -151,13 +151,8 @@ export const WritingTest = () => {
     };
     setCompletedTests(allTestsCompleted);
 
-    const allCompleted = Object.values(allTestsCompleted).every(test => test === true);
     setOpen(false);
-    if (allCompleted) {
-      navigate('/results');
-    } else {
-      navigate('/menu');
-    }
+    navigate('/menu');
   };
 
   // Format the time as MM:SS
@@ -167,7 +162,6 @@ export const WritingTest = () => {
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  console.log('data', data)
   return (
     <Container>
       <SectionPageTitle>
@@ -237,7 +231,7 @@ export const WritingTest = () => {
             </Box>
           </Box>
         </Box>
-        <BackDropComponent open={open}/>
+        <BackDropComponent open={open} />
       </Paper>
     </Container>
   );

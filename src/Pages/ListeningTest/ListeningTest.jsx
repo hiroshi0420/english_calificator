@@ -13,9 +13,7 @@ import { SectionPageTitle, ContainerQuestion, ContainerContent, CustomTyphograph
 import { TypograhpyQuestion } from '../Style';
 // API
 import { QuestionApi } from '../../Services/QuestionsApi';
-
 import { TestContext } from '../../Context/TestProvider';
-
 import { BackDropComponent } from '../../Components/BackDrop/BackDropComponet';
 
 export const ListeningTest = () => {
@@ -29,8 +27,10 @@ export const ListeningTest = () => {
   const [open, setOpen] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [responses, setResponses] = useState([]);
+  const [allResponses, setAllResponses] = useState([]);
   const [timeLeft, setTimeLeft] = useState(10 * 60);
   const [audioBase64, setAudioBase64] = useState('');
+  const idTest = JSON.parse(localStorage.getItem('test'));
 
   const progress = ((currentQuestionIndex + 1) / (data?.[0]?.questionSet?.length || 1)) * 100;
 
@@ -39,12 +39,15 @@ export const ListeningTest = () => {
       let response = await questionApi.getListeningTest();
       if (response.status === 200) {
         let resp = response.data;
-        console.log('Loaded data:', resp);
         setData(resp);
-        setResponses(resp[0].questionSet.map(() => ({ response: '' })));
+        setResponses(resp[0].questionSet.map(() => ({ userAnswer: '' })));
         setAudioBase64(resp[0].audioAsBase64);  // Set initial audio
-      } else {
-        console.error('Error al cargar preguntas:', response.statusText);
+        setAllResponses(resp[0].questionSet.map(() => ({
+          testId: idTest[0]?.id,
+          listeningQuestionId: resp[0].id,
+          userAnswer: '',
+          createdAt: new Date()
+        })));
       }
     } catch (error) {
       console.error('Error en la solicitud:', error);
@@ -53,24 +56,18 @@ export const ListeningTest = () => {
 
   const sendAnswer = async () => {
     try {
-      const requestPayload = {
-        id: data[0].id,
-        innerQuestionIds: data[0].questionSet.map(q => q.id),
-        innerResponseIndexes: responses.map((response, index) => {
-          const optionIndex = data[0].questionSet[index].options.indexOf(response.response);
-          return optionIndex + 1; // Sumar 1 porque los índices inician en 1
-        }),
-      };
+      // const requestPayload = {
+      //   id: data[0].id,
+      //   innerQuestionIds: data[0].questionSet.map(q => q.id),
+      //   innerResponseIndexes: responses.map((response, index) => {
+      //     const optionIndex = data[0].questionSet[index].options.indexOf(response.response);
+      //     return optionIndex + 1; // Sumar 1 porque los índices inician en 1
+      //   }),
+      // };
 
-      console.log('Request Payload:', requestPayload);
-
-      let response = await questionApi.sendListeningTest([requestPayload]);
+      let response = await questionApi.sendListeningTest(allResponses);
       if (response.status === 200) {
         let resp = response.data;
-        setRespTest((prevState) => [...prevState, { test: 'listening', data: resp }]);
-        console.log('Respuestas enviadas:', resp);
-      } else {
-        console.error('Error al enviar respuestas:', response.statusText);
       }
     } catch (error) {
       console.error('Error en la solicitud:', error.response ? error.response.data : error.message);
@@ -92,6 +89,11 @@ export const ListeningTest = () => {
   const handleOptionChange = (index, option) => {
     const updatedResponses = [...responses];
     updatedResponses[index] = { response: option };
+    setAllResponses((prev) =>
+      prev.map((response, i) =>
+        i === index ? { ...response, userAnswer: option } : response
+      )
+    );
     setResponses(updatedResponses);
   };
 
@@ -122,13 +124,8 @@ export const ListeningTest = () => {
     };
     setCompletedTests(allTestsCompleted);
 
-    const allCompleted = Object.values(allTestsCompleted).every(test => test === true);
+    navigate('/menu');
     setOpen(false);
-    if (allCompleted) {
-      navigate('/results');
-    } else {
-      navigate('/menu');
-    }
   };
 
   const formatTime = (time) => {
@@ -152,7 +149,7 @@ export const ListeningTest = () => {
         <Box>
           <Box>
             <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-              <audio controls src={`data:audio/mp3;base64,${audioBase64}`} style={{ height: '30px'}}/>
+              <audio controls src={`data:audio/mp3;base64,${audioBase64}`} style={{ height: '30px' }} />
             </Box>
             <ContainerQuestion>
               <ContainerContent numberQuestion={true}>
@@ -215,7 +212,7 @@ export const ListeningTest = () => {
             </Box>
           </Box>
         </Box>
-        <BackDropComponent open={open}/>
+        <BackDropComponent open={open} />
       </Paper>
     </Container>
   );

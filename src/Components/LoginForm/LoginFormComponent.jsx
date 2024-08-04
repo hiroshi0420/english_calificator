@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useContext} from 'react'
 import { useTheme } from '@mui/material/styles';
 import axios from 'axios';
 
@@ -61,12 +61,19 @@ export const LoginFormComponent = () => {
         try {
             setOpen(true);
             const response = await apiLogin.login({ email, password });
+            const { access_token, ...userInfo } = response.data;
     
             if (response.status === 200) {
-                const token = response.data.access_token;
-                localStorage.setItem('token', token);
+                // Convertimos el objeto userInfo a JSON antes de almacenarlo
+                localStorage.setItem('profile', JSON.stringify(userInfo));
+                localStorage.setItem('token', JSON.stringify(response.data.access_token));
+                console.log('userInfo', userInfo)
                 setError('');
-                navigate('/menu');
+                if(userInfo.role === 'User'){
+                    navigate('/menu');
+                }else if(userInfo.role === 'Admin'){
+                    navigate('/results');
+                }
             } else {
                 setError('Invalid email or password.');
             }
@@ -76,6 +83,7 @@ export const LoginFormComponent = () => {
             setOpen(false); 
         }
     };
+    
 
     return (
         <>
