@@ -57,7 +57,6 @@ export const ReadingTest = () => {
           testId: idTest[0]?.id,
           readingQuestionId: q.id,
           userAnswer: '',
-          createdAt: new Date(),
         })));
       }
     } catch (error) {
@@ -67,15 +66,12 @@ export const ReadingTest = () => {
 
   // console.log('data', data)
 
-  console.log('allResponses', allResponses)
   const sendAnswer = async () => {
     try {
 
       let response = await questionApi.sendReadingTest(allResponses);
       if (response.status === 200) {
         let resp = response.data;
-        setRespTest((prevState) => [...prevState, { test: 'reading', data: resp }]);
-        console.log('Respuestas enviadas:', resp);
       } else {
         console.error('Error al enviar respuestas:', response.statusText);
       }
@@ -159,14 +155,8 @@ export const ReadingTest = () => {
       reading: true,
     };
     setCompletedTests(allTestsCompleted);
-
-    const allCompleted = Object.values(allTestsCompleted).every(test => test === true);
+    navigate('/menu');
     setOpen(false);
-    if (allCompleted) {
-      navigate('/results');
-    } else {
-      navigate('/menu');
-    }
   };
 
   // Format the time as MM:SS
@@ -192,7 +182,7 @@ export const ReadingTest = () => {
           <Box>
             <ContainerText>
               <TypograhpyQuestion variant='body1'>
-                  {data?.text}
+                {data?.text}
               </TypograhpyQuestion>
             </ContainerText>
             <Divider primary='Inbox' />
@@ -251,7 +241,7 @@ export const ReadingTest = () => {
             </Box>
           </Box>
         </Box>
-        <BackDropComponent open={open}/>
+        <BackDropComponent open={open} />
       </Paper>
     </Container>
   );

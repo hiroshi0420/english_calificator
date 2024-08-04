@@ -67,8 +67,13 @@ export const LoginFormComponent = () => {
                 // Convertimos el objeto userInfo a JSON antes de almacenarlo
                 localStorage.setItem('profile', JSON.stringify(userInfo));
                 localStorage.setItem('token', JSON.stringify(response.data.access_token));
+                console.log('userInfo', userInfo)
                 setError('');
-                navigate('/menu');
+                if(userInfo.role === 'User'){
+                    navigate('/menu');
+                }else if(userInfo.role === 'Admin'){
+                    navigate('/results');
+                }
             } else {
                 setError('Invalid email or password.');
             }

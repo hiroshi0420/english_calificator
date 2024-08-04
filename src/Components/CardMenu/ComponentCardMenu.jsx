@@ -10,9 +10,9 @@ export const ComponentCardMenu = ({ components, completedTests, handleNavigation
           <Container 
             key={`${el.id} - ${el.type}`} 
             onClick={() => handleNavigation(el.router, el.name2, el.type)}
-            disabled={completedTests?.[el.type] || !enabledTests}
+            disabled={completedTests?.[el.type] || el.disabled}
           >
-            <ComponentIcon type={el.type} disabled={completedTests?.[el.type] || !enabledTests}/>
+            <ComponentIcon type={el.type} disabled={completedTests?.[el.type] || el.disabled}/>
             <CustomTitle variant='h5'>{el.name}</CustomTitle>
             <Content className='content-card'>
                 <Typography variant='caption' sx={{ color: '#ffffff'}}>

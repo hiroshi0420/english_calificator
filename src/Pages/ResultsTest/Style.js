@@ -78,3 +78,12 @@ export const ContainerContent = styled('div')(() => {
         gap: '0.50rem',
     }
 });
+
+export const SectionPageTitle = styled('section')(() => {
+    return {
+      display: 'flex',
+      justifyContent: 'flex-start',
+      height: '10%',
+      width: '100%',
+    }
+  })

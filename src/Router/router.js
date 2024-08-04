@@ -22,7 +22,8 @@ const Router = {
     apiSendListeningTest: '/api/Listening/answers',
     apiSendSpeakingTest: '/api/Speaking/answers',
 
-    apiGetTest: '/api/Tests/user/:id',
+    apiGetTest: '/api/Tests/user/:id/testId',
+    apiGetTestByCompanyComplete: '/api/Tests/company/:id/completed',
 
     apiResultsTest: '/api/FinalResult',
 

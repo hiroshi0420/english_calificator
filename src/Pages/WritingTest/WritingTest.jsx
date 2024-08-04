@@ -23,7 +23,7 @@ import { BackDropComponent } from '../../Components/BackDrop/BackDropComponet';
 export const WritingTest = () => {
   const questionApi = new QuestionApi();
   const testApi = new TestApi();
-  const { completedTests, setCompletedTests, setRespTest } = useContext(TestContext);
+  const { completedTests, setCompletedTests } = useContext(TestContext);
   const navigate = useNavigate();
 
   const theme = useTheme();
@@ -43,11 +43,10 @@ export const WritingTest = () => {
 
   const loadQuestions = async () => {
     try {
-      let response = await questionApi.getWritingTest(3);
+      let response = await questionApi.getWritingTest(4);
       if (response.status === 200) {
         let resp = response.data;
         setData(resp);
-        console.log('respuestas Reading', resp);
         // Inicializar el estado de respuestas
         setResponses(resp.questions.map(() => ({ userAnswer: '' })));
         // Establecer la primera pregunta en el estado actual
@@ -57,7 +56,6 @@ export const WritingTest = () => {
           testId: idTest[0]?.id,
           writingQuestionId: q.id,
           userAnswer: '',
-          createdAt: new Date()
         })));
       }
     } catch (error) {
@@ -70,23 +68,23 @@ export const WritingTest = () => {
       let response = await questionApi.sendWritingTest(allResponses);
       if (response.status === 200) {
         let resp = response.data;
-        setRespTest((prevState) => [...prevState, { test: 'writing', data: resp }]);
       }
     } catch (error) {
       console.error('Error en la solicitud:', error.response ? error.response.data : error.message);
     }
   };
 
+
   const handleNext = () => {
     if (currentQuestionIndex < data?.questions.length - 1) {
       // Guardar la respuesta actual en el estado de respuestas
       const updatedResponses = [...responses];
-      updatedResponses[currentQuestionIndex] = { userAnswer: currentQuestion.userAnswer };
+      updatedResponses[currentQuestionIndex] = { userAnswer: currentQuestion?.userAnswer };
       setResponses(updatedResponses);
 
       // Actualizar el estado de todas las respuestas
       const updatedAllResponses = [...allResponses];
-      updatedAllResponses[currentQuestionIndex].userAnswer = currentQuestion.userAnswer;
+      updatedAllResponses[currentQuestionIndex].userAnswer = currentQuestion?.userAnswer;
       setAllResponses(updatedAllResponses);
 
       // Cambiar a la siguiente pregunta
@@ -94,7 +92,7 @@ export const WritingTest = () => {
       setCurrentQuestionIndex(nextIndex);
       setCurrentQuestion({
         question: data.questions[nextIndex].question,
-        userAnswer: updatedResponses[nextIndex].userAnswer,
+        userAnswer: updatedResponses[nextIndex].userAnswer || '',
       });
     }
   };
@@ -103,12 +101,12 @@ export const WritingTest = () => {
     if (currentQuestionIndex > 0) {
       // Guardar la respuesta actual en el estado de respuestas
       const updatedResponses = [...responses];
-      updatedResponses[currentQuestionIndex] = { userAnswer: currentQuestion.userAnswer };
+      updatedResponses[currentQuestionIndex] = { userAnswer: currentQuestion?.userAnswer };
       setResponses(updatedResponses);
 
       // Actualizar el estado de todas las respuestas
       const updatedAllResponses = [...allResponses];
-      updatedAllResponses[currentQuestionIndex].userAnswer = currentQuestion.userAnswer;
+      updatedAllResponses[currentQuestionIndex].userAnswer = currentQuestion?.userAnswer;
       setAllResponses(updatedAllResponses);
 
       // Cambiar a la pregunta anterior
@@ -116,7 +114,7 @@ export const WritingTest = () => {
       setCurrentQuestionIndex(prevIndex);
       setCurrentQuestion({
         question: data.questions[prevIndex].question,
-        userAnswer: updatedResponses[prevIndex].userAnswer,
+        userAnswer: updatedResponses[prevIndex].userAnswer || '',
       });
     }
   };
@@ -153,13 +151,8 @@ export const WritingTest = () => {
     };
     setCompletedTests(allTestsCompleted);
 
-    const allCompleted = Object.values(allTestsCompleted).every(test => test === true);
     setOpen(false);
-    if (allCompleted) {
-      navigate('/results');
-    } else {
-      navigate('/menu');
-    }
+    navigate('/menu');
   };
 
   // Format the time as MM:SS
@@ -238,7 +231,7 @@ export const WritingTest = () => {
             </Box>
           </Box>
         </Box>
-        <BackDropComponent open={open}/>
+        <BackDropComponent open={open} />
       </Paper>
     </Container>
   );

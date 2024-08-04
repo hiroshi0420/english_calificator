@@ -3,9 +3,8 @@ import React, { createContext, useState, useEffect } from 'react';
 export const TestContext = createContext();
 
 export const TestProvider = ({ children, location }) => {
-  const [respTest, setRespTest] = useState([]);
+
   const [enabledTests, setEnabledTest] = useState(false);
-  // console.log('respTest', respTest);
   const [completedTests, setCompletedTests] = useState({
     writing: false,
     reading: false,
@@ -38,7 +37,7 @@ export const TestProvider = ({ children, location }) => {
   }, [location.pathname]);
 
   return (
-    <TestContext.Provider value={{ completedTests, setCompletedTests, respTest, setRespTest, enabledTests, setEnabledTest}}>
+    <TestContext.Provider value={{ completedTests, setCompletedTests, enabledTests, setEnabledTest}}>
       {children}
     </TestContext.Provider>
   );
