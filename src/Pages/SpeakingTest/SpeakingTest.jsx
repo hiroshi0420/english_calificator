@@ -43,6 +43,11 @@ export const SpeakingTest = () => {
   const mediaRecorderRef = useRef(null);
   const [stream, setStream] = useState(null);
 
+  useEffect(() => {
+    if (timeLeft === 0) {
+      handleSubmit();
+    }
+  }, [timeLeft]);
 
   const loadQuestions = async () => {
     try {
@@ -56,9 +61,9 @@ export const SpeakingTest = () => {
         setCurrentQuestion({ question: resp.questions[0].question, audioBase64: '' });
         // Inicializar el estado de todas las respuestas
         setAllResponses(resp.questions.map((q) => ({
-          audioBase64: '',
           testId: idTest[0]?.id,
           speakingQuestionId: q.id,
+          audioBase64: '',
         })));
       } else {
         console.error('Error al cargar preguntas:', response.statusText);

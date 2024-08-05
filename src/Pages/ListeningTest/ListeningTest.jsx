@@ -34,6 +34,12 @@ export const ListeningTest = () => {
 
   const progress = ((currentQuestionIndex + 1) / (data?.[0]?.questionSet?.length || 1)) * 100;
 
+  useEffect(() => {
+    if (timeLeft === 0) {
+      handleSubmit();
+    }
+  }, [timeLeft]);
+
   const loadQuestions = async () => {
     try {
       let response = await questionApi.getListeningTest();

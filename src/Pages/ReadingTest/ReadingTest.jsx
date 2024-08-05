@@ -41,7 +41,12 @@ export const ReadingTest = () => {
   const progress = ((currentQuestionIndex + 1) / (data?.questions.length || 1)) * 100;
   const idTest = JSON.parse(localStorage.getItem('test'));
 
-  console.log('data', data)
+  useEffect(() => {
+    if (timeLeft === 0) {
+      handleSubmit();
+    }
+  }, [timeLeft]);
+
   const loadQuestions = async () => {
     try {
       let response = await questionApi.getReadingTest();
