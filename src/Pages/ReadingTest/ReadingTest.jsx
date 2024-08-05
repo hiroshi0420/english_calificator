@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 // MUI
 import { Paper, Typography, Button, Box, useMediaQuery } from '@mui/material';
@@ -166,6 +166,10 @@ export const ReadingTest = () => {
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
+  const formattedEmailText = (emailText) => {
+    return emailText.replace(/\[NEWLINE\]/g, '<br/>');
+  };
+
   return (
     <Container>
       <SectionPageTitle>
@@ -181,9 +185,7 @@ export const ReadingTest = () => {
         <Box>
           <Box>
             <ContainerText>
-              <TypograhpyQuestion variant='body1'>
-                {data?.text}
-              </TypograhpyQuestion>
+            <TypograhpyQuestion variant='body1' dangerouslySetInnerHTML={{ __html: formattedEmailText(data?.text) }} />
             </ContainerText>
             <Divider primary='Inbox' />
             <ContainerQuestion>
