@@ -41,30 +41,25 @@ export const ListeningTest = () => {
         let resp = response.data;
         setData(resp);
         setResponses(resp[0].questionSet.map(() => ({ userAnswer: '' })));
-        setAudioBase64(resp[0].audioAsBase64);  // Set initial audio
-        setAllResponses(resp[0].questionSet.map(() => ({
-          testId: idTest[0]?.id,
-          listeningQuestionId: resp[0].id,
-          userAnswer: '',
-          createdAt: new Date()
-        })));
+        setAudioBase64(resp[0].audioAsBase64);
+  
+        // Inicializar allResponses con un solo objeto
+        setAllResponses([
+          {
+            testId: idTest[0]?.id,
+            listeningQuestionId: resp[0].id,
+            userAnswer: JSON.stringify({ answers: [] }), // Inicializar el userAnswer como un JSON vacío
+            scorePercentage: 0, // Inicializar el puntaje en 0
+          },
+        ]);
       }
     } catch (error) {
       console.error('Error en la solicitud:', error);
     }
   };
-
+  
   const sendAnswer = async () => {
     try {
-      // const requestPayload = {
-      //   id: data[0].id,
-      //   innerQuestionIds: data[0].questionSet.map(q => q.id),
-      //   innerResponseIndexes: responses.map((response, index) => {
-      //     const optionIndex = data[0].questionSet[index].options.indexOf(response.response);
-      //     return optionIndex + 1; // Sumar 1 porque los índices inician en 1
-      //   }),
-      // };
-
       let response = await questionApi.sendListeningTest(allResponses);
       if (response.status === 200) {
         let resp = response.data;
@@ -86,14 +81,41 @@ export const ListeningTest = () => {
     }
   };
 
-  const handleOptionChange = (index, option) => {
+  const handleOptionChange = (questionIndex, selectedOption) => {
+    const correctOptionIndex = data[0].questionSet[questionIndex].correctOptionIndex - 1;
+    const correctAnswer = data[0].questionSet[questionIndex].options[correctOptionIndex];
+  
+    const scorePercentage = selectedOption === correctAnswer ? 25 : 0;
+  
+    setAllResponses((prev) => {
+      const currentResponse = prev[0]; // Obtener el único objeto en el array
+  
+      // Asegurarse de que userAnswer esté inicializado como un string JSON válido
+      const userAnswerJson = currentResponse.userAnswer ? JSON.parse(currentResponse.userAnswer) : { answers: [] };
+  
+      const newAnswer = {
+        id: data[0].questionSet[questionIndex].id,
+        userAnswer: selectedOption,
+        correctAnswer: correctAnswer,
+        scorePercentage: scorePercentage,
+      };
+  
+      const updatedAnswers = userAnswerJson.answers || [];
+      updatedAnswers[questionIndex] = newAnswer; // Reemplazar o agregar la respuesta en la posición correcta
+  
+      const newScorePercentage = currentResponse.scorePercentage + scorePercentage;
+  
+      return [
+        {
+          ...currentResponse,
+          userAnswer: JSON.stringify({ answers: updatedAnswers }),
+          scorePercentage: newScorePercentage,
+        },
+      ];
+    });
+  
     const updatedResponses = [...responses];
-    updatedResponses[index] = { response: option };
-    setAllResponses((prev) =>
-      prev.map((response, i) =>
-        i === index ? { ...response, userAnswer: option } : response
-      )
-    );
+    updatedResponses[questionIndex] = { response: selectedOption };
     setResponses(updatedResponses);
   };
 
@@ -115,7 +137,19 @@ export const ListeningTest = () => {
     }
   }, [data]);
 
+  const calculateTotalScorePercentage = () => {
+    return allResponses.reduce((total, response) => total + response.scorePercentage, 0);
+  };
+
   const handleSubmit = () => {
+    const totalScorePercentage = calculateTotalScorePercentage();
+    setAllResponses((prev) =>
+      prev.map((response) => ({
+        ...response,
+        scorePercentage: totalScorePercentage,
+      }))
+    );
+  
     setOpen(true);
     sendAnswer();
     const allTestsCompleted = {
@@ -123,7 +157,7 @@ export const ListeningTest = () => {
       listening: true,
     };
     setCompletedTests(allTestsCompleted);
-
+  
     navigate('/menu');
     setOpen(false);
   };

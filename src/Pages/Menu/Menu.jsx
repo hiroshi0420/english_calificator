@@ -33,7 +33,6 @@ export const Menu = () => {
   });
   const { completedTests, enabledTests, setEnabledTest } = useContext(TestContext);
   const user = JSON.parse(localStorage.getItem('profile'))
-  console.log('usuario', user);
 
   useEffect(() => {
     getTestUserId();
@@ -42,7 +41,7 @@ export const Menu = () => {
   const getTestUserId = async() => {
     const response = await testApi.getTestById(user.userId);
     if(response.status === 200) {
-      await localStorage.setItem('test', JSON.stringify(response));
+      localStorage.setItem('test', JSON.stringify(response.data));
       setEnabledTest(false);
     }else if(response.status === 404) {
       setEnabledTest(true);
