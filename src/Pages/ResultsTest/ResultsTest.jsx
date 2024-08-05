@@ -20,11 +20,14 @@ export const ResultsTest = () => {
   const [testCompleted, setTestCompleted] = useState([]);
   const [open, setOpen] = useState(false);
   const user = JSON.parse(localStorage.getItem('profile'));
-  const [hasFetched, setHasFetched] = useState(false); // Agregamos un estado para saber si ya se realizó la llamada
+  const [hasFetched, setHasFetched] = useState(false); // Estado para saber si ya se realizó la llamada
 
   useEffect(() => {
-    getTestByCompanyCompleted(user.companyId);
-  }, [user]);
+    if (user && !hasFetched) {
+      getTestByCompanyCompleted(user.companyId);
+      setHasFetched(true); // Marcamos como que ya se realizó la llamada
+    }
+  }, [user, hasFetched]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
