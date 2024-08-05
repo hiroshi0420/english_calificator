@@ -23,11 +23,8 @@ export const ResultsTest = () => {
   const [hasFetched, setHasFetched] = useState(false); // Agregamos un estado para saber si ya se realizó la llamada
 
   useEffect(() => {
-    if (user && !hasFetched) {
-      getTestByCompanyCompleted(user.companyId);
-      setHasFetched(true); // Marcamos como que ya se realizó la llamada
-    }
-  }, [user, hasFetched]);
+    getTestByCompanyCompleted(user.companyId);
+  }, [user]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
