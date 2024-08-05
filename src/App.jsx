@@ -11,6 +11,7 @@ import { ReadingTest } from './Pages/ReadingTest/ReadingTest';
 import { ListeningTest } from './Pages/ListeningTest/ListeningTest';
 import { SpeakingTest } from './Pages/SpeakingTest/SpeakingTest';
 import { ResultsTest } from './Pages/ResultsTest/ResultsTest';
+import { UserDetails } from './Pages/UserDetails/UserDetails';
 
 import { TestProvider } from './Context/TestProvider';
 
@@ -38,6 +39,7 @@ function App() {
             <Route path={Router.applisteningTest} element={<Layout><ListeningTest/></Layout>} />
             <Route path={Router.appSpeakingTest} element={<Layout><SpeakingTest/></Layout>} />
             <Route path={Router.appResults} element={<Layout><ResultsTest/></Layout>} />
+            <Route path={Router.appUserDetails} element={<Layout><UserDetails /></Layout>} />
             {/* Ruta para manejar todas las rutas no definidas */}
             <Route path="*" element={<Login />} />
           </Routes>
