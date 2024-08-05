@@ -44,7 +44,7 @@ export const ResultsTest = () => {
   const user = JSON.parse(localStorage.getItem('profile'));
   useEffect(() => {
     getTestByCompanyCompleted(user.companyId);
-  }, [user]);
+  }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
