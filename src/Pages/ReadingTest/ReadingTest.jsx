@@ -172,7 +172,8 @@ export const ReadingTest = () => {
   };
 
   const formattedEmailText = (emailText) => {
-    return emailText.replace(/\[NEWLINE\]/g, '<br/>');
+    if (!emailText) return ''; // Devuelve una cadena vacía si emailText es undefined o null
+    return emailText.replace(/\\n/g, '<br/>');
   };
 
   return (
@@ -184,13 +185,13 @@ export const ReadingTest = () => {
         formatTime={formatTime}
         timeLeft={timeLeft}
         progress={progress}
-        totalMarks={`${currentQuestionIndex + 1}/${data?.questions.length}`}
+        totalMarks={`${currentQuestionIndex + 1}/${data?.questions?.length || 0}`}
       />
       <Paper elevation={0} sx={{ padding: '0 24px 0 24px' }}>
         <Box>
           <Box>
             <ContainerText>
-            <TypograhpyQuestion variant='body1' dangerouslySetInnerHTML={{ __html: formattedEmailText(data?.text) }} />
+              <TypograhpyQuestion variant='body1' dangerouslySetInnerHTML={{ __html: formattedEmailText(data?.text || '') }} />
             </ContainerText>
             <Divider primary='Inbox' />
             <ContainerQuestion>
@@ -201,7 +202,7 @@ export const ReadingTest = () => {
               </ContainerContent>
               <ContainerContent>
                 <TypograhpyQuestion variant="body1" align="left">
-                  {data?.questions[currentQuestionIndex].question}
+                  {data?.questions?.[currentQuestionIndex]?.question || 'Loading...'}
                 </TypograhpyQuestion>
               </ContainerContent>
             </ContainerQuestion>
@@ -222,8 +223,7 @@ export const ReadingTest = () => {
                   Back
                 </Button>
                 {
-                  currentQuestionIndex === data?.questions.length - 1 ? (
-
+                  currentQuestionIndex === data?.questions?.length - 1 ? (
                     <Button
                       variant='contained'
                       color='success'
@@ -238,7 +238,7 @@ export const ReadingTest = () => {
                       variant='contained'
                       sx={{ fontSize: isLgDown && '0.80rem', height: '25px', width: '150px' }}
                       onClick={handleNext}
-                      disabled={currentQuestionIndex === data?.questions.length - 1}
+                      disabled={currentQuestionIndex === data?.questions?.length - 1}
                     >
                       Next
                     </Button>
@@ -252,4 +252,5 @@ export const ReadingTest = () => {
       </Paper>
     </Container>
   );
+
 };

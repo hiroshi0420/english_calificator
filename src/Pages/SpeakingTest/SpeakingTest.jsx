@@ -178,6 +178,11 @@ export const SpeakingTest = () => {
 
   useEffect(() => {
     const getMedia = async () => {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        console.error('getUserMedia is not supported in this browser.');
+        return;
+      }
+
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         setStream(stream);
@@ -188,6 +193,7 @@ export const SpeakingTest = () => {
 
     getMedia();
   }, []);
+
 
   const handleStartRecording = () => {
     if (stream) {
@@ -264,10 +270,10 @@ export const SpeakingTest = () => {
             </ContainerQuestion>
 
             <RecordingComponent
-                handleStartRecording={handleStartRecording}
-                handleStopRecording={handleStopRecording}
-                isRecording={isRecording}
-                audioURL={audioURL}
+              handleStartRecording={handleStartRecording}
+              handleStopRecording={handleStopRecording}
+              isRecording={isRecording}
+              audioURL={audioURL}
             />
 
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -307,7 +313,7 @@ export const SpeakingTest = () => {
             </Box>
           </Box>
         </Box>
-        <BackDropComponent open={open}/>
+        <BackDropComponent open={open} />
       </Paper>
     </Container>
   );
